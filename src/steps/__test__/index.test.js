@@ -1,5 +1,5 @@
-import simulate from 'miniprogram-simulate';
 import path from 'path';
+import simulate from 'miniprogram-simulate';
 
 describe('Steps', () => {
   let comp;
@@ -8,6 +8,21 @@ describe('Steps', () => {
     const Index = load(path.resolve(__dirname, `./index`));
     comp = simulate.render(Index);
     comp.attach(document.body);
+  });
+
+  it(`: style && customStyle`, async () => {
+    const $steps = comp.querySelector('.a1 >>> .t-steps');
+    const $stepsItem = comp.querySelector('.a1 >>> .t-steps-item');
+    // expect(comp.toJSON()).toMatchSnapshot();
+    if (VIRTUAL_HOST) {
+      expect($steps.dom.getAttribute('style').includes(`${comp.data.style}; ${comp.data.customStyle}`)).toBeTruthy();
+      expect(
+        $stepsItem.dom.getAttribute('style').includes(`${comp.data.style}; ${comp.data.customStyle}`),
+      ).toBeTruthy();
+    } else {
+      expect($steps.dom.getAttribute('style').includes(`${comp.data.customStyle}`)).toBeTruthy();
+      expect($stepsItem.dom.getAttribute('style').includes(`${comp.data.customStyle}`)).toBeTruthy();
+    }
   });
 
   it(':default-current', async () => {

@@ -1,6 +1,7 @@
 import { SuperComponent, wxComponent } from '../common/src/index';
 import config from '../common/config';
 import props from './props';
+import { getCharacterLength } from '../common/utils';
 
 const { prefix } = config;
 const name = `${prefix}-search`;
@@ -8,13 +9,12 @@ const name = `${prefix}-search`;
 @wxComponent()
 export default class Search extends SuperComponent {
   externalClasses = [
-    'class',
     `${prefix}-class`,
     `${prefix}-class-input-container`,
     `${prefix}-class-input`,
     `${prefix}-class-action`,
     `${prefix}-class-left`,
-    `${prefix}-class-right`,
+    `${prefix}-class-clear`,
   ];
 
   options = {
@@ -24,43 +24,67 @@ export default class Search extends SuperComponent {
   properties = props;
 
   observers = {
-    focus(this: Search, nextValue: boolean) {
-      this.setData({ 'localValue.focus': nextValue });
+    resultList(val) {
+      const { isSelected } = this.data;
+      if (val.length) {
+        if (isSelected) {
+          // 已选择
+          this.setData({
+            isShowResultList: false,
+            isSelected: false,
+          });
+        } else {
+          this.setData({
+            isShowResultList: true,
+          });
+        }
+      } else {
+        this.setData({
+          isShowResultList: false,
+        });
+      }
     },
   };
 
   data = {
     classPrefix: name,
     prefix,
-    localValue: {
-      focus: false,
-    },
+    isShowResultList: false,
+    isSelected: false,
   };
 
   onInput(e) {
-    const { value } = e.detail;
+    let { value } = e.detail;
+    const { maxcharacter } = this.properties;
+    if (maxcharacter && typeof maxcharacter === 'number' && maxcharacter > 0) {
+      const { characters } = getCharacterLength('maxcharacter', value, maxcharacter);
 
-    this.setData({ value });
+      value = characters;
+    }
+
+    this.setData({
+      value,
+    });
+
     this.triggerEvent('change', { value });
   }
 
   onFocus(e) {
     const { value } = e.detail;
 
-    this.setData({ 'localValue.focus': true });
     this.triggerEvent('focus', { value });
   }
 
   onBlur(e) {
     const { value } = e.detail;
 
-    this.setData({ 'localValue.focus': false });
     this.triggerEvent('blur', { value });
   }
 
   handleClear() {
     this.setData({ value: '' });
     this.triggerEvent('clear', { value: '' });
+    this.triggerEvent('change', { value: '' });
   }
 
   onConfirm(e) {
@@ -70,5 +94,17 @@ export default class Search extends SuperComponent {
 
   onActionClick() {
     this.triggerEvent('action-click');
+  }
+
+  onSelectResultItem(e) {
+    const { index } = e.currentTarget.dataset;
+    const item = this.properties.resultList[index];
+    this.setData({
+      value: item,
+      isSelected: true,
+    });
+
+    this.triggerEvent('change', { value: item });
+    this.triggerEvent('selectresult', { index, item });
   }
 }

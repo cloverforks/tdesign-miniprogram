@@ -4,24 +4,24 @@ exports[`navbar :base 1`] = `
 <main>
   <t-navbar>
     <wx-view
-      class="t-navbar t-navbar--fixed t-navbar--visible-animation t-class"
-      style="; "
+      class="t-navbar t-navbar--fixed t-navbar--visible-animation class t-class"
+      style=""
     >
       <wx-view
-        class="t-navbar__placeholder"
+        class="t-navbar__placeholder t-class-placeholder"
       />
       <wx-view
-        class="t-navbar__content"
+        class="t-navbar__content t-class-content"
       >
         <wx-view
-          class="t-navbar__left t-class-left"
+          class="t-navbar__left  t-class-left"
         >
           <wx-view
-            class="t-navbar__capsule"
+            class="t-navbar__capsule t-class-capsule"
           />
         </wx-view>
         <wx-view
-          class="t-navbar__center t-class-center"
+          class="t-navbar__center  t-class-center"
         >
           <wx-text
             class="t-navbar__center-title t-class-title"
@@ -39,24 +39,24 @@ exports[`navbar :base 2`] = `
 <main>
   <t-navbar>
     <wx-view
-      class="t-navbar t-navbar--fixed t-navbar--hide-animation t-class"
-      style="; "
+      class="t-navbar t-navbar--fixed t-navbar--hide-animation class t-class"
+      style="--td-navbar-padding-top: 20px; --td-navbar-right: 94px; --td-navbar-capsule-height: 32px; --td-navbar-capsule-width: 87px; --td-navbar-height: 40px;"
     >
       <wx-view
-        class="t-navbar__placeholder"
+        class="t-navbar__placeholder t-class-placeholder"
       />
       <wx-view
-        class="t-navbar__content"
+        class="t-navbar__content t-class-content"
       >
         <wx-view
-          class="t-navbar__left t-class-left"
+          class="t-navbar__left  t-class-left"
         >
           <wx-view
-            class="t-navbar__capsule"
+            class="t-navbar__capsule t-class-capsule"
           />
         </wx-view>
         <wx-view
-          class="t-navbar__center t-class-center"
+          class="t-navbar__center  t-class-center"
         >
           <wx-text
             class="t-navbar__center-title t-class-title"
@@ -74,24 +74,24 @@ exports[`navbar :base 3`] = `
 <main>
   <t-navbar>
     <wx-view
-      class="t-navbar t-navbar--fixed t-navbar--hide t-class"
-      style="; "
+      class="t-navbar t-navbar--fixed t-navbar--hide class t-class"
+      style="--td-navbar-padding-top: 20px; --td-navbar-right: 94px; --td-navbar-capsule-height: 32px; --td-navbar-capsule-width: 87px; --td-navbar-height: 40px;"
     >
       <wx-view
-        class="t-navbar__placeholder"
+        class="t-navbar__placeholder t-class-placeholder"
       />
       <wx-view
-        class="t-navbar__content"
+        class="t-navbar__content t-class-content"
       >
         <wx-view
-          class="t-navbar__left t-class-left"
+          class="t-navbar__left  t-class-left"
         >
           <wx-view
-            class="t-navbar__capsule"
+            class="t-navbar__capsule t-class-capsule"
           />
         </wx-view>
         <wx-view
-          class="t-navbar__center t-class-center"
+          class="t-navbar__center  t-class-center"
         >
           <wx-text
             class="t-navbar__center-title t-class-title"
@@ -109,24 +109,24 @@ exports[`navbar :fixed 1`] = `
 <main>
   <t-navbar>
     <wx-view
-      class="t-navbar t-navbar--fixed t-navbar--visible-animation t-class"
-      style="; "
+      class="t-navbar t-navbar--fixed t-navbar--visible-animation class t-class"
+      style="--td-navbar-padding-top: 20px; --td-navbar-right: 94px; --td-navbar-capsule-height: 32px; --td-navbar-capsule-width: 87px; --td-navbar-height: 40px;"
     >
       <wx-view
-        class="t-navbar__placeholder"
+        class="t-navbar__placeholder t-class-placeholder"
       />
       <wx-view
-        class="t-navbar__content"
+        class="t-navbar__content t-class-content"
       >
         <wx-view
-          class="t-navbar__left t-class-left"
+          class="t-navbar__left  t-class-left"
         >
           <wx-view
-            class="t-navbar__capsule"
+            class="t-navbar__capsule t-class-capsule"
           />
         </wx-view>
         <wx-view
-          class="t-navbar__center t-class-center"
+          class="t-navbar__center  t-class-center"
         >
           <wx-text
             class="t-navbar__center-title t-class-title"
@@ -144,24 +144,24 @@ exports[`navbar :menu button 1`] = `
 <main>
   <t-navbar>
     <wx-view
-      class="t-navbar t-navbar--fixed  t-class"
-      style="--td-navbar-padding-top:20px; --td-navbar-right:414px; --td-navbar-capsule-height: 10px; --td-navbar-capsule-width:40px; "
+      class="t-navbar t-navbar--fixed  class t-class"
+      style="--td-navbar-padding-top: 20px; --td-navbar-right: 375px; --td-navbar-capsule-height: 10px; --td-navbar-capsule-width: 40px; --td-navbar-height: -10px;"
     >
       <wx-view
-        class="t-navbar__placeholder"
+        class="t-navbar__placeholder t-class-placeholder"
       />
       <wx-view
-        class="t-navbar__content"
+        class="t-navbar__content t-class-content"
       >
         <wx-view
-          class="t-navbar__left t-class-left"
+          class="t-navbar__left  t-class-left"
         >
           <wx-view
-            class="t-navbar__capsule"
+            class="t-navbar__capsule t-class-capsule"
           />
         </wx-view>
         <wx-view
-          class="t-navbar__center t-class-center"
+          class="t-navbar__center  t-class-center"
         >
           <wx-text
             class="t-navbar__center-title t-class-title"

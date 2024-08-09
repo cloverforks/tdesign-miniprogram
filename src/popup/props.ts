@@ -19,11 +19,6 @@ const props: TdPopupProps = {
   content: {
     type: String,
   },
-  /** 自定义组件样式 */
-  style: {
-    type: String,
-    value: '',
-  },
   /** 动画过渡时间 */
   duration: {
     type: Number,
@@ -52,10 +47,6 @@ const props: TdPopupProps = {
   showOverlay: {
     type: Boolean,
     value: true,
-  },
-  /** 动画效果定义 */
-  transitionProps: {
-    type: Object,
   },
   /** 是否显示浮层 */
   visible: {

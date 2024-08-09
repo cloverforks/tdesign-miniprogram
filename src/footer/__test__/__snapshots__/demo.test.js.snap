@@ -3,8 +3,7 @@
 exports[`Footer Footer base demo works fine 1`] = `
 <base>
   <t-footer
-    copyright="Copyright © 2021-2031 TD.All Rights Reserved."
-    theme="text"
+    text="Copyright © 2021-2031 TD.All Rights Reserved."
   />
 </base>
 `;
@@ -15,8 +14,7 @@ exports[`Footer Footer link demo works fine 1`] = `
     class="footer-example"
   >
     <t-footer
-      copyright="Copyright © 2021-2031 TD.All Rights Reserved."
-      textLinkList="{{
+      links="{{
         Array [
           Object {
             "name": "底部链接",
@@ -25,15 +23,14 @@ exports[`Footer Footer link demo works fine 1`] = `
           },
         ]
       }}"
-      theme="text"
+      text="Copyright © 2021-2031 TD.All Rights Reserved."
     />
   </wx-view>
   <wx-view
     class="footer-example"
   >
     <t-footer
-      copyright="Copyright © 2021-2031 TD.All Rights Reserved."
-      textLinkList="{{
+      links="{{
         Array [
           Object {
             "name": "底部链接",
@@ -47,7 +44,7 @@ exports[`Footer Footer link demo works fine 1`] = `
           },
         ]
       }}"
-      theme="text"
+      text="Copyright © 2021-2031 TD.All Rights Reserved."
     />
   </wx-view>
 </link>
@@ -61,11 +58,10 @@ exports[`Footer Footer logo demo works fine 1`] = `
     <t-footer
       logo="{{
         Object {
-          "icon": "https://tdesign.gtimg.com/miniprogram/images/logo2.png",
+          "icon": "https://tdesign.gtimg.com/mobile/demos/logo2.png",
           "title": "品牌名称",
         }
       }}"
-      theme="logo"
     />
   </wx-view>
   <wx-view
@@ -74,10 +70,9 @@ exports[`Footer Footer logo demo works fine 1`] = `
     <t-footer
       logo="{{
         Object {
-          "url": "https://tdesign.gtimg.com/miniprogram/images/logo1.png",
+          "url": "https://tdesign.gtimg.com/mobile/demos/logo1.png",
         }
       }}"
-      theme="logo"
     />
   </wx-view>
 </logo>

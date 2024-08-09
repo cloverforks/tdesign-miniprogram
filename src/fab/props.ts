@@ -10,6 +10,12 @@ const props: TdFabProps = {
   buttonProps: {
     type: Object,
   },
+  /** 是否可移动 */
+  draggable: {
+    type: Boolean,
+    optionalTypes: [String],
+    value: false,
+  },
   /** 图标 */
   icon: {
     type: String,

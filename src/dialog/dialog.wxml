@@ -5,7 +5,8 @@
 
 <t-popup
   name="dialog"
-  style="{{ style }}"
+  style="{{_._style([style, customStyle])}}"
+  class="class"
   t-class="{{classPrefix}}__wrapper"
   visible="{{visible}}"
   showOverlay="{{showOverlay}}"
@@ -14,6 +15,7 @@
   overlayProps="{{overlayProps}}"
   zIndex="{{zIndex}}"
   placement="center"
+  usingCustomNavbar="{{usingCustomNavbar}}"
   bind:visible-change="overlayClick"
 >
   <view slot="content" class="{{classPrefix}} {{prefix}}-class">

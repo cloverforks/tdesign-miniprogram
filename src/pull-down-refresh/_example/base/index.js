@@ -1,28 +1,31 @@
 Component({
   data: {
-    baseRefresh: {
-      value: false,
-    },
+    enable: false,
     loadingProps: {
       size: '50rpx',
     },
     rowCol1: [{ width: '100%', height: '342rpx', borderRadius: '24rpx' }],
     rowCol2: [[{ width: '327rpx' }], [{ width: '200rpx' }], [{ size: '327rpx', borderRadius: '24rpx' }]],
-    backTopVisible: false,
+    scrollTop: 0,
+  },
+
+  ready() {
+    this.setData({ enable: true });
+    setTimeout(() => {
+      this.setData({ enable: false });
+    }, 1000);
   },
 
   methods: {
-    onPullDownRefresh() {
+    onRefresh() {
+      this.setData({ enable: true });
       setTimeout(() => {
-        this.setData({ 'baseRefresh.value': false });
+        this.setData({ enable: false });
       }, 1500);
     },
     onScroll(e) {
       const { scrollTop } = e.detail;
-
-      this.setData({
-        backTopVisible: scrollTop > 100,
-      });
+      this.setData({ scrollTop });
     },
   },
 });

@@ -3,6 +3,7 @@ import config from '../common/config';
 import props from './props';
 import TCalendar from '../common/shared/calendar/index';
 import { TdCalendarProps } from './type';
+import useCustomNavbar from '../mixins/using-custom-navbar';
 
 const { prefix } = config;
 const name = `${prefix}-calendar`;
@@ -11,11 +12,12 @@ export interface CalendarProps extends TdCalendarProps {}
 
 @wxComponent()
 export default class Calendar extends SuperComponent {
+  behaviors = [useCustomNavbar];
+
   externalClasses = [`${prefix}-class`];
 
   options: WechatMiniprogram.Component.ComponentOptions = {
     multipleSlots: true,
-    styleIsolation: 'apply-shared',
   };
 
   properties = props;
@@ -40,17 +42,26 @@ export default class Calendar extends SuperComponent {
   ];
 
   lifetimes = {
-    ready() {
+    created() {
       this.base = new TCalendar(this.properties);
+    },
+    ready() {
       this.initialValue();
       this.setData({
         days: this.base.getDays(),
       });
       this.calcMonths();
+
+      if (!this.data.usePopup) {
+        this.scrollIntoView();
+      }
     },
   };
 
   observers = {
+    type(v) {
+      this.base.type = v;
+    },
     confirmBtn(v) {
       if (typeof v === 'string') {
         this.setData({ innerConfirmBtn: v === 'slot' ? 'slot' : { content: v } });
@@ -59,26 +70,29 @@ export default class Calendar extends SuperComponent {
       }
     },
     'firstDayOfWeek,minDate,maxDate'(firstDayOfWeek, minDate, maxDate) {
-      if (this.base) {
-        this.base.firstDayOfWeek = firstDayOfWeek;
-        this.base.minDate = minDate;
-        this.base.maxDate = maxDate;
-        this.calcMonths();
-      }
+      firstDayOfWeek && (this.base.firstDayOfWeek = firstDayOfWeek);
+      minDate && (this.base.minDate = minDate);
+      maxDate && (this.base.maxDate = maxDate);
+      this.calcMonths();
     },
     value(v) {
-      if (this.base) {
-        this.base.value = v;
-      }
+      this.base.value = v;
+      this.calcMonths();
     },
     visible(v) {
       if (v) {
         this.scrollIntoView();
+        this.base.value = this.data.value;
+        this.calcMonths();
+      }
+    },
+    format(v) {
+      const { usePopup, visible } = this.data;
 
-        if (this.base) {
-          this.base.value = this.data.value;
-          this.calcMonths();
-        }
+      this.base.format = v;
+
+      if (!usePopup || visible) {
+        this.calcMonths();
       }
     },
   };
@@ -165,6 +179,9 @@ export default class Calendar extends SuperComponent {
         return val.map((item) => item.getTime());
       }
       return val.getTime();
+    },
+    onScroll(e) {
+      this.triggerEvent('scroll', e.detail);
     },
   };
 }

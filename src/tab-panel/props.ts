@@ -11,12 +11,7 @@ const props: TdTabPanelProps = {
     type: Object,
     value: null,
   },
-  /** 自定义组件样式 */
-  style: {
-    type: String,
-    value: '',
-  },
-  /** 选项卡内容隐藏时是否销毁 */
+  /** 【实现有误，暂不支持】选项卡内容隐藏时是否销毁 */
   destroyOnHide: {
     type: Boolean,
     value: true,
@@ -25,6 +20,10 @@ const props: TdTabPanelProps = {
   disabled: {
     type: Boolean,
     value: false,
+  },
+  /** 图标，传对象则透传至 Icon */
+  icon: {
+    type: null,
   },
   /** 选项卡名称 */
   label: {

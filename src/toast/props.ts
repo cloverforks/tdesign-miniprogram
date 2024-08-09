@@ -6,11 +6,6 @@
 
 import { TdToastProps } from './type';
 const props: TdToastProps = {
-  /** 自定义组件样式 */
-  style: {
-    type: String,
-    value: '',
-  },
   /** 图标排列方式 */
   direction: {
     type: String,
@@ -21,14 +16,9 @@ const props: TdToastProps = {
     type: Number,
     value: 2000,
   },
-  /** 组件类名 */
-  externalClasses: {
-    type: Array,
-  },
-  /** 自定义图标 */
+  /** 自定义图标。传入对象则透传至 Icon 组件 */
   icon: {
-    type: String,
-    value: '',
+    type: null,
   },
   /** 弹窗显示文字 */
   message: {

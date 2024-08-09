@@ -18,6 +18,12 @@ isComponent: true
 
 ## 代码演示
 
+<a href="https://developers.weixin.qq.com/s/Ot604imU7ESt" title="在开发者工具中预览效果" target="_blank" rel="noopener noreferrer"> 在开发者工具中预览效果 </a>
+
+<blockquote style="background-color: #d9e1ff; font-size: 15px; line-height: 26px;margin: 16px 0 0;padding: 16px; border-radius: 6px; color: #0052d9" >
+<p>Tips: 请确保开发者工具为打开状态。导入开发者工具后，依次执行：npm i > 构建npm包 > 勾选 "将JS编译成ES5"</p>
+</blockquote>
+
 ### 组件类型
 
 基础步进器
@@ -50,10 +56,8 @@ isComponent: true
 
 名称 | 类型 | 默认值 | 说明 | 必传
 -- | -- | -- | -- | --
-custom-style `v0.25.0` | String | - | 自定义组件样式 | N
 disable-input | Boolean | false | 禁用输入框 | N
 disabled | Boolean | false | 禁用全部操作 | N
-external-classes | Array | - | 组件类名，分别用于表示组件外层元素、输入框、右侧递增号、左侧递减号等元素类名。`['t-class', 't-class-input', 't-class-add', 't-class-minus']` | N
 input-width | Number | - | 输入框宽度，默认单位 `px` | N
 max | Number | 100 | 最大值 | N
 min | Number | 0 | 最小值 | N
@@ -70,3 +74,20 @@ default-value | String / Number | undefined | 值。非受控属性 | N
 blur | `({ type: string \| number })` | 输入框失去焦点时触发
 change | `({ value: string \| number })` | 数值发生变更时触发
 overlimit | `({type: 'minus' \| 'plus'})` | 数值超出限制时触发
+
+### Stepper 外部样式类
+类名 | 说明
+-- | -- 
+t-class | 根节点样式类
+t-class-input | 输入框样式类
+t-class-minus | 左侧递减号样式类
+t-class-plus | 右侧递增号样式类
+
+### CSS 变量
+组件提供了下列 CSS 变量，可用于自定义样式。
+名称 | 默认值 | 描述 
+-- | -- | --
+--td-stepper-border-color | @component-border | - 
+--td-stepper-border-radius | @radius-small | - 
+--td-stepper-input-color | @font-gray-1 | - 
+--td-stepper-input-disabled-color | @font-gray-4 | - 

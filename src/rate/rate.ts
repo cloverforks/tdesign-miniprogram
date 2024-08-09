@@ -27,12 +27,13 @@ export default class Rate extends SuperComponent {
     tipsLeft: 0,
     actionType: '',
     scaleIndex: -1,
+    isVisibleToScreenReader: false,
   };
 
   methods = {
     onTouch(e: WechatMiniprogram.TouchEvent, eventType: 'tap' | 'move') {
       const { count, allowHalf, gap, value: currentValue, size } = this.properties;
-      const [touch] = e.touches;
+      const [touch] = e.changedTouches;
       const margin = unitConvert(gap);
       getRect(this, `.${name}__wrapper`).then((rect) => {
         const { width, left } = rect;
@@ -62,19 +63,29 @@ export default class Rate extends SuperComponent {
         if (value !== currentValue) {
           this._trigger('change', { value });
         }
+
+        if (this.touchEnd) {
+          this.hideTips();
+        }
       });
     },
     onTap(e: WechatMiniprogram.TouchEvent) {
       this.onTouch(e, 'tap');
     },
+    onTouchStart() {
+      this.touchEnd = false;
+    },
     onTouchMove(e: WechatMiniprogram.TouchEvent) {
       this.onTouch(e, 'move');
+      this.showAlertText();
     },
     onTouchEnd() {
+      this.touchEnd = true;
+      this.hideTips();
+    },
+    hideTips() {
       if (this.data.actionType === 'move') {
-        this.setData({}, () => {
-          this.setData({ tipsVisible: false, scaleIndex: -1 });
-        });
+        this.setData({ tipsVisible: false, scaleIndex: -1 });
       }
     },
     onSelect(e: WechatMiniprogram.TouchEvent) {
@@ -85,6 +96,18 @@ export default class Rate extends SuperComponent {
 
       this._trigger('change', { value });
       setTimeout(() => this.setData({ tipsVisible: false, scaleIndex: -1 }), 300);
+    },
+    // 旁白模式: 变更数值时显示告警文案
+    showAlertText() {
+      if (this.data.isVisibleToScreenReader === true) return;
+      this.setData({
+        isVisibleToScreenReader: true,
+      });
+      setTimeout(() => {
+        this.setData({
+          isVisibleToScreenReader: false,
+        });
+      }, 2e3);
     },
   };
 }

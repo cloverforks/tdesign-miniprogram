@@ -1,15 +1,16 @@
 @import '../common/style/index.less';
 
-@divider-color: var(--td-divider-color, @gray-color-3);
-@divider-content-color: var(--td-divider-content-color, @font-gray-3);
+@divider-color: var(--td-divider-color, @bg-color-component);
+@divider-content-color: var(--td-divider-content-color, @text-color-placeholder);
 @divider-content-font-size: var(--td-divider-content-font-size, 24rpx);
 @divider-content-line-height: var(--td-divider-content-line-height, 40rpx);
+@divider-content-line-style: var(--td-divider-content-line-style, solid);
 
 .@{prefix}-divider {
   display: flex;
   color: @divider-color;
   border-color: @divider-color;
-  border-style: solid;
+  border-style: @divider-content-line-style;
   border-width: 0;
 
   &::before,
@@ -32,6 +33,7 @@
     &::after {
       border-top-width: 1px;
       transform: scaleY(0.5);
+      transform-origin: bottom;
     }
 
     .@{prefix}-divider__content:not(:empty) {
@@ -41,13 +43,14 @@
 
   &--vertical {
     flex-direction: column;
-    height: 1em;
+    height: 28rpx;
     margin: 0 16rpx;
 
     &::before,
     &::after {
       border-left-width: 1px;
       transform: scaleX(0.5);
+      transform-origin: bottom;
     }
 
     &-center {

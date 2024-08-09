@@ -3,6 +3,9 @@
 /**
  * 该文件为脚本自动生成文件，请勿随意修改。如需修改请联系 PMC
  * */
+
+import { PopupProps } from '../popup/index';
+
 export interface TdDateTimePickerProps {
   /**
    * 取消按钮文字
@@ -21,10 +24,10 @@ export interface TdDateTimePickerProps {
     value?: string;
   };
   /**
-   * 自定义组件样式
-   * @default ''
+   *  组件国际化语言，目前支持: 简体中文(zh)、(tc)、英文(en)、日语(ja)、韩语(ko)、俄语(ru)等六种语言
+   * @default zh
    */
-  style?: {
+  customLocale?: {
     type: StringConstructor;
     value?: string;
   };
@@ -32,7 +35,7 @@ export interface TdDateTimePickerProps {
    * 选择器的最大可选时间，默认为当前时间+10年
    */
   end?: {
-    type: StringConstructor;
+    type: null;
     value?: string | number;
   };
   /**
@@ -43,23 +46,15 @@ export interface TdDateTimePickerProps {
     value?: ['t-class', 't-class-confirm', 't-class-cancel', 't-class-title'];
   };
   /**
-   * 底部内容
-   * @default true
-   */
-  footer?: {
-    type: BooleanConstructor;
-    value?: boolean;
-  };
-  /**
-   * 用于格式化日期，[详细文档](https://day.js.org/docs/en/display/format)
-   * @default ''
+   * 用于格式化 pick、change、confirm 事件返回的值，[详细文档](https://day.js.org/docs/en/display/format)
+   * @default 'YYYY-MM-DD HH:mm:ss'
    */
   format?: {
     type: StringConstructor;
     value?: string;
   };
   /**
-   * 头部内容。值为 true 显示空白头部，值为 false 不显示任何内容，值类型为 TNode 表示自定义头部内容
+   * 头部内容。值为 true 显示空白头部，值为 false 不显示任何内容
    * @default true
    */
   header?: {
@@ -71,8 +66,16 @@ export interface TdDateTimePickerProps {
    * @default 'date'
    */
   mode?: {
-    type: StringConstructor;
+    type: null;
     value?: DateTimePickerMode;
+  };
+  /**
+   * 透传 `Popup` 组件全部属性
+   * @default {}
+   */
+  popupProps?: {
+    type: ObjectConstructor;
+    value?: PopupProps;
   };
   /**
    * 【开发中】是否在日期旁边显示周几（如周一，周二，周日等）
@@ -86,8 +89,15 @@ export interface TdDateTimePickerProps {
    * 选择器的最小可选时间，默认为当前时间-10年
    */
   start?: {
-    type: StringConstructor;
+    type: null;
     value?: string | number;
+  };
+  /**
+   * 时间间隔步数，示例：`{ minute: 5 }`
+   */
+  steps?: {
+    type: ObjectConstructor;
+    value?: object;
   };
   /**
    * 标题
@@ -98,17 +108,25 @@ export interface TdDateTimePickerProps {
     value?: string;
   };
   /**
+   * 是否使用弹出层包裹
+   * @default true
+   */
+  usePopup?: {
+    type: BooleanConstructor;
+    value?: boolean;
+  };
+  /**
    * 选中值
    */
   value?: {
-    type: StringConstructor;
+    type: null;
     value?: DateValue;
   };
   /**
    * 选中值，非受控属性
    */
   defaultValue?: {
-    type: StringConstructor;
+    type: null;
     value?: DateValue;
   };
   /**

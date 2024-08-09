@@ -26,8 +26,8 @@ export interface TdTextareaProps {
    * @default false
    */
   autosize?: {
-    type: BooleanConstructor;
-    value?: boolean;
+    type: null;
+    value?: boolean | object;
   };
   /**
    * 点击键盘右下角按钮时是否保持键盘不收起点
@@ -39,7 +39,7 @@ export interface TdTextareaProps {
   };
   /**
    * 设置键盘右下角按钮的文字，仅在 type='text'时生效
-   * @default done
+   * @default return
    */
   confirmType?: {
     type: StringConstructor;
@@ -130,7 +130,7 @@ export interface TdTextareaProps {
   };
   /**
    * 文本框值
-   * @default ''
+   * @default null
    */
   value?: {
     type: StringConstructor;

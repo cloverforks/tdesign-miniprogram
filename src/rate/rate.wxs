@@ -7,21 +7,19 @@ module.exports = {
     return texts[curVal] || '未评分';
   },
 
-  getIconName: function (defaultValue, value, index, variant, icon) {
-    var curVal = value ? value : defaultValue;
+  getIconName: function (defaultValue, value, index, icon) {
+    var curVal = value >= 0 ? value : defaultValue;
     var name = ['star-filled', 'star-filled'];
 
     if (icon) {
       name = icon.constructor == 'Array' ? icon : [icon, icon];
-    } else if (variant === 'outline') {
-      name[1] = 'star';
     }
 
     return name[curVal >= index + 1 ? 0 : 1];
   },
 
   getIconClass: function (classPrefix, defaultValue, value, index, allowHalf, disabled, scaleIndex) {
-    var curVal = value ? value : defaultValue;
+    var curVal = value >= 0 ? value : defaultValue;
     var className = [];
     if (curVal >= index + 1) {
       className.push(classPrefix + '--selected');

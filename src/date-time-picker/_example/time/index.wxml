@@ -2,22 +2,22 @@
 <t-cell
   title="选择时间"
   hover
-  note="{{secondText}}"
+  note="{{secondText || ''}}"
   arrow
   data-mode="second"
   bindtap="showPicker"
-  t-class="pannel-item"
+  t-class="panel-item"
 />
 
 <view class="demo-desc">时分选择器</view>
 <t-cell
   title="选择时间"
   hover
-  note="{{minuteText}}"
+  note="{{minuteText || ''}}"
   arrow
   data-mode="minute"
   bindtap="showPicker"
-  t-class="pannel-item"
+  t-class="panel-item"
 />
 
 <!-- 时分 -->

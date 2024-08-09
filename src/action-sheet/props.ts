@@ -21,11 +21,6 @@ const props: TdActionSheetProps = {
     type: Number,
     value: 8,
   },
-  /** 自定义组件样式 */
-  style: {
-    type: String,
-    value: '',
-  },
   /** 动作面板描述文字 */
   description: {
     type: String,
@@ -35,8 +30,18 @@ const props: TdActionSheetProps = {
   items: {
     type: Array,
   },
+  /** popupProps透传 */
+  popupProps: {
+    type: Object,
+    value: {},
+  },
   /** 是否显示取消按钮 */
   showCancel: {
+    type: Boolean,
+    value: true,
+  },
+  /** 是否显示遮罩层 */
+  showOverlay: {
     type: Boolean,
     value: true,
   },

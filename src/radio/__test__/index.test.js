@@ -11,6 +11,24 @@ describe('radio', () => {
   // });
   const id = load(path.resolve(__dirname, `./index`));
 
+  it(`: style && customStyle`, async () => {
+    const comp = simulate.render(id);
+    comp.attach(document.createElement('parent-wrapper'));
+    const $radioGroup = comp.querySelector('.group >>> .t-radio-group');
+    const $radio = comp.querySelector('.a >>> .t-radio');
+
+    // expect(comp.toJSON()).toMatchSnapshot();
+    if (VIRTUAL_HOST) {
+      expect(
+        $radioGroup.dom.getAttribute('style').includes(`${comp.data.style}; ${comp.data.customStyle}`),
+      ).toBeTruthy();
+      expect($radio.dom.getAttribute('style').includes(`${comp.data.style}; ${comp.data.customStyle}`)).toBeTruthy();
+    } else {
+      expect($radioGroup.dom.getAttribute('style').includes(`${comp.data.customStyle}`)).toBeTruthy();
+      expect($radio.dom.getAttribute('style').includes(`${comp.data.customStyle}`)).toBeTruthy();
+    }
+  });
+
   it(':base', async () => {
     const comp = simulate.render(id);
     comp.attach(document.createElement('parent-wrapper'));
@@ -106,6 +124,7 @@ describe('radio', () => {
 
       const group = comp.querySelector('#optionsGroup');
       group.instance.handleRadioChange({
+        detail: { checked: false },
         target: {
           dataset: { value: 'b' },
         },

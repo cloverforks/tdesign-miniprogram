@@ -6,6 +6,7 @@ isComponent: true
 ---
 
 <span class="coverages-badge" style="margin-right: 10px"><img src="https://img.shields.io/badge/coverages%3A%20lines-97%25-blue" /></span><span class="coverages-badge" style="margin-right: 10px"><img src="https://img.shields.io/badge/coverages%3A%20functions-88%25-blue" /></span><span class="coverages-badge" style="margin-right: 10px"><img src="https://img.shields.io/badge/coverages%3A%20statements-97%25-blue" /></span><span class="coverages-badge" style="margin-right: 10px"><img src="https://img.shields.io/badge/coverages%3A%20branches-92%25-blue" /></span>
+
 ## 引入
 
 全局引入，在 miniprogram 根目录下的`app.json`中配置，局部引入，在需要引入的页面或组件的`index.json`中配置。
@@ -18,11 +19,21 @@ isComponent: true
 
 ## 代码演示
 
-### 组件类型
+<a href="https://developers.weixin.qq.com/s/Id60eimj76Ss" title="在开发者工具中预览效果" target="_blank" rel="noopener noreferrer"> 在开发者工具中预览效果 </a>
+
+<blockquote style="background-color: #d9e1ff; font-size: 15px; line-height: 26px;margin: 16px 0 0;padding: 16px; border-radius: 6px; color: #0052d9" >
+<p>Tips: 请确保开发者工具为打开状态。导入开发者工具后，依次执行：npm i > 构建npm包 > 勾选 "将JS编译成ES5"</p>
+</blockquote>
+
+### 01 组件类型
 
 基础输入框
 
 {{ base }}
+
+带字数限制输入框
+
+{{ maxlength }}
 
 带操作输入框
 
@@ -32,31 +43,35 @@ isComponent: true
 
 {{ prefix }}
 
-文本框内容位置
-
-{{ align }}
-
-文本框字数限制
-
-{{ maxlength }}
-
-特殊文本类型
+特定类型输入框
 
 {{ special }}
 
-### 组件状态
+### 02 组件状态
 
 输入框状态
 
 {{ status }}
 
-### 组件样式
+信息超长状态
+
+{{ label }}
+
+### 03 组件样式
+
+内容位置
+
+{{ align }}
 
 竖排样式
 
 {{ layout }}
 
-带边框样式
+非通栏样式
+
+{{ banner }}
+
+标签外置样式
 
 {{ bordered }}
 
@@ -64,8 +79,8 @@ isComponent: true
 
 {{ custom }}
 
-
 ## API
+
 ### Input Props
 
 名称 | 类型 | 默认值 | 说明 | 必传
@@ -74,21 +89,20 @@ align | String | left | 文本内容位置，居左/居中/居右。可选项：
 layout | String | horizontal | 标题输入框布局方式。可选项：vertical/horizontal | N
 borderless | Boolean | false | 是否开启无边框模式 | N
 clearable | Boolean / Object | false | 是否可清空，默认不启动。值为 `true` 表示使用默认清除空按钮，值为 `Object` 表示透传至 `icon` | N
-custom-style `v0.25.0` | String | - | 自定义组件样式 | N
+clear-trigger | String | always | 清空图标触发方式，仅在输入框有值时有效。可选项：always / focus | N
 disabled | Boolean | false | 是否禁用输入框 | N
 error-message | String | - | 已废弃。错误提示文本，值为空不显示（废弃属性，如果需要，请更为使用 status 和 tips） | N
-external-classes | Array | - | 组件类名，用于设置组件外层元素、输入框、占位符、错误信息等元素类名。`['t-class','t-class-prefix-icon', 't-class-label', 't-class-input',  't-class-clearable', 't-class-suffix', 't-class-suffix-icon', 't-class-tips']` | N
 format | Function | - | 【开发中】指定输入框展示值的格式。TS 类型：`InputFormatType` `type InputFormatType = (value: InputValue) => number | string`。[详细类型定义](https://github.com/Tencent/tdesign-miniprogram/tree/develop/src/input/type.ts) | N
-label | String / Slot | - | 左侧文本。值为 `'slot'` 表示使用插槽，不传表示不显示文本。 | N
+label | String / Slot | - | 左侧文本。 | N
 maxcharacter | Number | - | 用户最多可以输入的字符个数，一个中文汉字表示两个字符长度。`maxcharacter` 和 `maxlength` 二选一使用 | N
-maxlength | Number | - | 用户最多可以输入的文本长度，一个中文等于一个计数长度。值为空，则表示不限制输入长度。`maxcharacter` 和 `maxlength` 二选一使用 | N
+maxlength | Number | -1 | 用户最多可以输入的文本长度，一个中文等于一个计数长度。默认为 -1，不限制输入长度。`maxcharacter` 和 `maxlength` 二选一使用 | N
 placeholder | String | undefined | 占位符 | N
-prefix-icon | String / Object / Slot | - | 组件前置图标。值为字符串表示图标名称，值为 `'slot'` 表示使用插槽，值为 `Object` 类型，表示透传至 `icon`。 | N
+prefix-icon | String / Object / Slot | - | 组件前置图标。值为字符串表示图标名称，值为 `Object` 类型，表示透传至 `icon`。 | N
 readonly | Boolean | false | 【开发中】只读状态 | N
 size | String | medium | 【已废弃】输入框尺寸。可选项：small/medium。TS 类型：`'medium' \| 'small'` | N
 status | String | - | 输入框状态。可选项：success/warning/error | N
 suffix | String / Slot | - | 后置图标前的后置内容 | N
-suffix-icon | String  / Object / Slot | - | 后置文本内容。值为字符串表示图标名称，值为 `'slot'` 表示使用插槽，值为 `Object` 类型，表示透传至 `icon`。 | N
+suffix-icon | String  / Object / Slot | - | 后置文本内容。值为字符串表示图标名称，值为 `Object` 类型，表示透传至 `icon`。 | N
 tips | String / Slot | - | 输入框下方提示文本，会根据不同的 `status` 呈现不同的样式 | N
 type | String | text | 输入框类型。可选项：text/number/idcard/digit/safe-password/password/nickname | N
 value | String / Number | - | 输入框的值。TS 类型：`InputValue` `type InputValue = string | number`。[详细类型定义](https://github.com/Tencent/tdesign-miniprogram/tree/develop/src/input/type.ts) | N
@@ -124,4 +138,47 @@ clear | \- | 清空按钮点击时触发
 enter | `(value: InputValue)` | 回车键按下时触发
 focus | `(value: InputValue)` | 获得焦点时触发
 keyboardheightchange | `(height: number, duration: number)` | 键盘高度发生变化的时候触发此事件
+nicknamereview | `(pass: boolean, timeout: boolean)`| 用户昵称审核完毕后触发，仅在 type 为 "nickname" 时有效
 click `v0.32.0`| `(trigger: InputTrigger)` | 点击事件。[详细类型定义](https://github.com/Tencent/tdesign-miniprogram/tree/develop/src/input/type.ts)。<br/>`type InputTrigger = 'suffix' \| 'suffix-icon';`<br/>
+
+### CellGroup 外部样式类
+
+类名 | 说明
+-- | --
+t-class | 根节点样式类
+t-class-prefix-icon | 前置图标样式类
+t-class-label | 标题样式类
+t-class-input | 标题样式类
+t-class-clearable | 标题样式类
+t-class-suffix | 后置样式类
+t-class-suffix-icon | 后置图标样式类
+t-class-tips | 提示样式类
+
+### CSS 变量
+
+组件提供了下列 CSS 变量，可用于自定义样式。
+名称 | 默认值 | 描述
+-- | -- | --
+--td-input-bg-color | @bg-color-container | -
+--td-input-border-color | @component-stroke | -
+--td-input-border-left-space | 32rpx | -
+--td-input-border-radius | @radius-default | -
+--td-input-border-right-space | 0 | -
+--td-input-default-text-color | @font-gray-1 | -
+--td-input-default-tips-color | @font-gray-3 | -
+--td-input-disabled-text-color | @text-color-disabled | -
+--td-input-error-text-color | @error-color | -
+--td-input-error-tips-color | @error-color | -
+--td-input-label-max-width | 5em | -
+--td-input-label-min-width | 2em | -
+--td-input-label-text-color | @font-gray-1 | -
+--td-input-placeholder-text-color | @text-color-placeholder | -
+--td-input-placeholder-text-font-size | @font-size-m | -
+--td-input-prefix-icon-color | @font-gray-1 | -
+--td-input-success-text-color | @success-color | -
+--td-input-success-tips-color | @success-color | -
+--td-input-suffix-icon-color | @font-gray-3 | -
+--td-input-suffix-text-color | @font-gray-1 | -
+--td-input-vertical-padding | 32rpx | -
+--td-input-warning-text-color | @warning-color | -
+--td-input-warning-tips-color | @warning-color | -

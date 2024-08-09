@@ -2,8 +2,8 @@
 <wxs src="../common/utils.wxs" module="_" />
 
 <view
-  style="{{ style }}"
-  class="{{_.cls(classPrefix, [['top', label || scaleTextArray.length], ['disabled', disabled], ['range', range]])}} class {{prefix}}-class"
+  style="{{_._style([style, customStyle])}}"
+  class="{{_.cls(classPrefix, [['top', label || scaleTextArray.length], ['disabled', disabled], ['range', range]])}} class {{prefix}}-class {{vertical ? classPrefix + '--vertical' : ''}}"
 >
   <block wx:if="{{!range}}">
     <text wx:if="{{showExtremeValue}}" class="{{classPrefix}}__value {{classPrefix}}__value--min">
@@ -12,7 +12,6 @@
     <view
       id="sliderLine"
       class="{{_.cls(classPrefix + '__bar', [['disabled', disabled], theme, ['marks', isScale && theme == 'capsule']])}} {{prefix}}-class-bar"
-      style="{{t.getColor(disabled, false, disabledColor, colors)}}"
       bind:tap="onSingleLineTap"
     >
       <block wx:if="{{isScale}}">
@@ -20,28 +19,32 @@
           class="{{_.cls(classPrefix + '__scale-item', [['active', _value >= item.val], ['disabled', disabled], theme, ['hidden', (index == 0 || index == scaleArray.length - 1) && theme == 'capsule' || value == item.val]])}}"
           wx:for="{{scaleArray}}"
           wx:key="index"
-          style="left:{{item.left}}px; transform: translateX(-50%); {{t.getColor(disabled, _value >= item.val, disabledColor, colors)}}"
+          style="{{vertical ? 'top' :  'left'}}:{{item.left}}px; {{vertical ? 'transform: translate(-50%, -50%);' : 'transform: translateX(-50%);'}}"
+          aria-hidden="{{true}}"
         >
-          <view wx:if="{{scaleTextArray.length}}" class="{{_.cls(classPrefix + '__scale-desc', [theme])}}}}">
+          <view wx:if="{{scaleTextArray.length}}" class="{{_.cls(classPrefix + '__scale-desc', [theme])}}">
             {{scaleTextArray[index]}}
           </view>
         </view>
       </block>
       <view
         class="{{_.cls(classPrefix + '__line', [['disabled', disabled], theme, 'single'])}} {{prefix}}-class-bar-active"
-        style="width: {{lineBarWidth}}; {{t.getColor(disabled, true, disabledColor, colors)}}"
+        style="{{vertical ? 'height' : 'width'}}: {{lineBarWidth}}"
       >
         <view
           id="singleDot"
           class="{{classPrefix}}__dot {{prefix}}-class-cursor"
-          bind:touchmove="onSingleLineTap"
-          bind:touchend="onTouchEnd"
-          bind:touchcancel="onTouchEnd"
+          catch:touchstart="onTouchStart"
+          catch:touchmove="onSingleLineTap"
+          catch:touchend="onTouchEnd"
+          catch:touchcancel="onTouchEnd"
         >
           <view
+            wx:if="{{label || isVisibleToScreenReader}}"
             class="{{_.cls(classPrefix+'__dot-value', [['sr-only', !label]])}}"
-            aria-role="region"
+            aria-role="alert"
             aria-live="assertive"
+            aria-hidden="{{!isVisibleToScreenReader}}"
           >
             {{t.getValue(label, _value) || _value}}
           </view>
@@ -52,6 +55,7 @@
             aria-valuemax="{{max}}"
             aria-valuemin="{{min}}"
             aria-valuenow="{{_value}}"
+            aria-valuetext="{{t.getValue(label, _value) || _value}}"
           ></view>
         </view>
       </view>
@@ -72,7 +76,6 @@
       id="sliderLine"
       bind:tap="onLineTap"
       class="{{_.cls(classPrefix + '__bar', [['disabled', disabled], theme, ['marks', isScale && theme == 'capsule']])}} {{prefix}}-class-bar"
-      style="{{t.getColor(disabled, false, disabledColor, colors)}}"
     >
       <block wx:if="{{isScale}}">
         <view
@@ -80,7 +83,8 @@
           wx:for="{{scaleArray}}"
           wx:for-index="index"
           wx:key="index"
-          style="left: {{item.left}}px; transform: translateX(-50%); {{t.getColor(disabled, (dotTopValue[1] >= item.val && item.val >= dotTopValue[0]), disabledColor, colors)}}"
+          style="{{vertical ? 'top' :  'left'}}:{{item.left}}px; {{vertical ? 'transform: translate(-50%, -50%);' : 'transform: translateX(-50%);'}}"
+          aria-hidden="{{true}}"
         >
           <view wx:if="{{scaleTextArray.length}}" class="{{_.cls(classPrefix + '__scale-desc', [theme])}}"
             >{{scaleTextArray[index]}}</view
@@ -89,19 +93,22 @@
       </block>
       <view
         class="{{_.cls(classPrefix + '__line', [['disabled', disabled], theme])}} {{prefix}}-class-bar-active"
-        style="left: {{lineLeft}}px; right: {{lineRight}}px; {{t.getColor(disabled, true, disabledColor, colors)}}"
+        style="{{vertical ? 'top' : 'left'}}: {{lineLeft}}px; {{vertical ? 'bottom' : 'right'}}: {{lineRight}}px"
       >
         <view
           id="leftDot"
-          bind:touchmove="onTouchMoveLeft"
-          bind:touchend="onTouchEnd"
-          bind:touchcancel="onTouchEnd"
+          catch:touchstart="onTouchStart"
+          catch:touchmove="onTouchMoveLeft"
+          catch:touchend="onTouchEnd"
+          catch:touchcancel="onTouchEnd"
           class="{{classPrefix}}__dot {{classPrefix}}__dot--left {{prefix}}-class-cursor"
         >
           <view
+            wx:if="{{label || isVisibleToScreenReader}}"
             class="{{_.cls(classPrefix+'__dot-value', [['sr-only', !label]])}}"
-            aria-role="region"
+            aria-role="alert"
             aria-live="assertive"
+            aria-hidden="{{!isVisibleToScreenReader}}"
           >
             {{t.getValue(label, dotTopValue[0]) || dotTopValue[0]}}
           </view>
@@ -109,22 +116,26 @@
             class="{{classPrefix}}__dot-slider"
             aria-role="slider"
             aria-disabled="{{disabled}}"
-            aria-valuemax="{{t.getValue(label, dotTopValue[1]) || dotTopValue[1]}}"
+            aria-valuemax="{{max}}"
             aria-valuemin="{{min}}"
-            aria-valuenow="{{t.getValue(label, dotTopValue[0]) || dotTopValue[0]}}"
+            aria-valuenow="{{dotTopValue[0]}}"
+            aria-valuetext="{{t.getValue(label, dotTopValue[0]) || dotTopValue[0]}}"
           ></view>
         </view>
         <view
           id="rightDot"
-          bind:touchmove="onTouchMoveRight"
-          bind:touchend="onTouchEnd"
-          bind:touchcancel="onTouchEnd"
+          catch:touchstart="onTouchStart"
+          catch:touchmove="onTouchMoveRight"
+          catch:touchend="onTouchEnd"
+          catch:touchcancel="onTouchEnd"
           class="{{classPrefix}}__dot {{classPrefix}}__dot--right {{prefix}}-class-cursor"
         >
           <view
+            wx:if="{{label || isVisibleToScreenReader}}"
             class="{{_.cls(classPrefix+'__dot-value', [['sr-only', !label]])}}"
-            aria-role="region"
+            aria-role="alert"
             aria-live="assertive"
+            aria-hidden="{{!isVisibleToScreenReader}}"
           >
             {{t.getValue(label, dotTopValue[1]) || dotTopValue[1]}}
           </view>
@@ -133,8 +144,9 @@
             aria-role="slider"
             aria-disabled="{{disabled}}"
             aria-valuemax="{{max}}"
-            aria-valuemin="{{t.getValue(label, dotTopValue[0]) || dotTopValue[0]}}"
-            aria-valuenow="{{t.getValue(label, dotTopValue[1]) || dotTopValue[1]}}"
+            aria-valuemin="{{min}}"
+            aria-valuenow="{{dotTopValue[1]}}"
+            aria-valuetext="{{t.getValue(label, dotTopValue[1]) || dotTopValue[1]}}"
           >
           </view>
         </view>

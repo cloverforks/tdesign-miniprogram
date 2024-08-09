@@ -15,15 +15,15 @@ const props: TdCascaderProps = {
   keys: {
     type: Object,
   },
-  /** 自定义组件样式 */
-  style: {
-    type: String,
-    value: '',
-  },
   /** 可选项数据源 */
   options: {
     type: Array,
     value: [],
+  },
+  /** 未选中时的提示文案 */
+  placeholder: {
+    type: String,
+    value: '选择选项',
   },
   /** 每级展示的次标题 */
   subTitles: {

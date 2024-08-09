@@ -2,6 +2,7 @@ import { RelationsOptions, SuperComponent, wxComponent } from '../common/src/ind
 import config from '../common/config';
 import props from './props';
 import type { TdDropdownMenuProps } from './type';
+import { calcIcon } from '../common/utils';
 
 const { prefix } = config;
 const name = `${prefix}-dropdown-menu`;
@@ -22,6 +23,7 @@ export default class DropdownMenu extends SuperComponent {
     menus: null,
     activeIdx: -1,
     bottom: 0,
+    _arrowIcon: { name: props.arrowIcon.value },
   };
 
   relations: RelationsOptions = {
@@ -33,6 +35,18 @@ export default class DropdownMenu extends SuperComponent {
   lifetimes = {
     ready() {
       this.getAllItems();
+    },
+  };
+
+  observers = {
+    arrowIcon(v) {
+      this.setData({
+        _arrowIcon: calcIcon(v),
+      });
+    },
+
+    activeIdx(v: number) {
+      this.triggerEvent(v === -1 ? 'close' : 'open');
     },
   };
 
@@ -80,7 +94,10 @@ export default class DropdownMenu extends SuperComponent {
       }
     },
     getAllItems() {
-      const menus = this.$children.map(({ data }) => ({ label: data.label, disabled: data.disabled }));
+      const menus = this.$children.map(({ data }) => ({
+        label: data.label || data.computedLabel,
+        disabled: data.disabled,
+      }));
 
       this.setData({
         menus,
@@ -91,5 +108,7 @@ export default class DropdownMenu extends SuperComponent {
 
       this.toggle(index);
     },
+
+    noop() {},
   };
 }

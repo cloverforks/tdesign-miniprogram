@@ -1,10 +1,21 @@
-const imageCdn = 'https://tdesign.gtimg.com/miniprogram/images/';
+const imageCdn = 'https://tdesign.gtimg.com/mobile/demos';
 const swiperList = [
-  `${imageCdn}/swiper1.png`,
-  `${imageCdn}/swiper2.png`,
-  `${imageCdn}/swiper3.png`,
-  `${imageCdn}/swiper4.png`,
-  `${imageCdn}/swiper5.png`,
+  {
+    value: `${imageCdn}/swiper1.png`,
+    ariaLabel: '图片1',
+  },
+  {
+    value: `${imageCdn}/swiper2.png`,
+    ariaLabel: '图片2',
+  },
+  {
+    value: `${imageCdn}/swiper1.png`,
+    ariaLabel: '图片1',
+  },
+  {
+    value: `${imageCdn}/swiper2.png`,
+    ariaLabel: '图片2',
+  },
 ];
 
 Component({

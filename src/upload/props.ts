@@ -19,10 +19,10 @@ const props: TdUploadProps = {
   config: {
     type: Object,
   },
-  /** 自定义组件样式 */
-  style: {
-    type: String,
-    value: '',
+  /** 是否禁用组件 */
+  disabled: {
+    type: Boolean,
+    value: false,
   },
   /** 已上传文件列表 */
   files: {
@@ -68,6 +68,15 @@ const props: TdUploadProps = {
   source: {
     type: String,
     value: 'media',
+  },
+  /** 是否支持拖拽排序 */
+  draggable: {
+    type: null,
+  },
+  /** 是否使用动画过渡 */
+  transition: {
+    type: Object,
+    value: { backTransition: true, duration: 300, timingFunction: 'ease' },
   },
 };
 

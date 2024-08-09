@@ -1,15 +1,7 @@
-/*
- * @Author: rileycai
- * @Date: 2021-09-21 19:10:10
- * @LastEditTime: 2021-09-28 10:26:57
- * @LastEditors: Please set LastEditors
- * @Description: textarea从input组件拆分出去
- * @FilePath: /tdesign-miniprogram/src/input/input.ts
- */
 import { SuperComponent, wxComponent } from '../common/src/index';
 import config from '../common/config';
 import props from './props';
-import { getCharacterLength, setIcon } from '../common/utils';
+import { getCharacterLength, calcIcon, isDef } from '../common/utils';
 
 const { prefix } = config;
 const name = `${prefix}-input`;
@@ -17,7 +9,7 @@ const name = `${prefix}-input`;
 @wxComponent()
 export default class Input extends SuperComponent {
   options = {
-    multipleSlots: true, // 在组件定义时的选项中启用多slot支持
+    multipleSlots: true,
   };
 
   externalClasses = [
@@ -39,35 +31,37 @@ export default class Input extends SuperComponent {
     prefix,
     classPrefix: name,
     classBasePrefix: prefix,
+    showClearIcon: true,
   };
 
   lifetimes = {
     ready() {
-      const { value } = this.properties;
-      this.updateValue(value);
+      const { value, defaultValue } = this.properties;
+      this.updateValue(value ?? defaultValue ?? '');
     },
   };
 
   observers = {
-    prefixIcon(prefixIcon) {
-      const obj = setIcon('prefixIcon', prefixIcon, '');
+    prefixIcon(v) {
       this.setData({
-        ...obj,
+        _prefixIcon: calcIcon(v),
       });
     },
 
-    suffixIcon(suffixIcon) {
-      const obj = setIcon('suffixIcon', suffixIcon, '');
+    suffixIcon(v) {
       this.setData({
-        ...obj,
+        _suffixIcon: calcIcon(v),
       });
     },
 
-    clearable(clearable) {
-      const obj = setIcon('clearable', clearable, 'close-circle-filled');
+    clearable(v) {
       this.setData({
-        ...obj,
+        _clearIcon: calcIcon(v, 'close-circle-filled'),
       });
+    },
+
+    clearTrigger() {
+      this.updateClearIconVisible();
     },
   };
 
@@ -80,7 +74,7 @@ export default class Input extends SuperComponent {
           value: characters,
           count: length,
         });
-      } else if (maxlength > 0 && !Number.isNaN(maxlength)) {
+      } else if (maxlength && maxlength > 0 && !Number.isNaN(maxlength)) {
         const { length, characters } = getCharacterLength('maxlength', value, maxlength);
         this.setData({
           value: characters,
@@ -89,9 +83,13 @@ export default class Input extends SuperComponent {
       } else {
         this.setData({
           value,
-          count: value ? String(value).length : 0,
+          count: isDef(value) ? String(value).length : 0,
         });
       }
+    },
+    updateClearIconVisible(value: boolean = false) {
+      const { clearTrigger } = this.properties;
+      this.setData({ showClearIcon: value || clearTrigger === 'always' });
     },
     onInput(e) {
       const { value, cursor, keyCode } = e.detail;
@@ -99,9 +97,11 @@ export default class Input extends SuperComponent {
       this.triggerEvent('change', { value: this.data.value, cursor, keyCode });
     },
     onFocus(e) {
+      this.updateClearIconVisible(true);
       this.triggerEvent('focus', e.detail);
     },
     onBlur(e) {
+      this.updateClearIconVisible();
       this.triggerEvent('blur', e.detail);
     },
     onConfirm(e) {
@@ -119,6 +119,9 @@ export default class Input extends SuperComponent {
     },
     onKeyboardHeightChange(e) {
       this.triggerEvent('keyboardheightchange', e.detail);
+    },
+    onNickNameReview(e) {
+      this.triggerEvent('nicknamereview', e.detail);
     },
   };
 }

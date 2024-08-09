@@ -1,12 +1,16 @@
 import { SuperComponent, wxComponent, RelationsOptions } from '../common/src/index';
+import { rpx2px } from '../common/utils';
 import config from '../common/config';
 import props from './props';
+import useCustomNavbar from '../mixins/using-custom-navbar';
 
 const { prefix } = config;
 const name = `${prefix}-picker`;
 
 @wxComponent()
 export default class Picker extends SuperComponent {
+  behaviors = [useCustomNavbar];
+
   properties = props;
 
   externalClasses = [`${prefix}-class`, `${prefix}-class-confirm`, `${prefix}-class-cancel`, `${prefix}-class-title`];
@@ -25,24 +29,45 @@ export default class Picker extends SuperComponent {
   };
 
   observers = {
-    value() {
+    'value, visible'() {
       this.updateChildren();
+    },
+    keys(obj) {
+      this.setData({
+        labelAlias: obj?.label || 'label',
+        valueAlias: obj?.value || 'value',
+      });
+    },
+  };
+
+  lifetimes = {
+    attached() {
+      this.setData({
+        pickItemHeight: rpx2px(this.properties.itemHeight),
+      });
     },
   };
 
   data = {
     prefix,
     classPrefix: name,
+    labelAlias: 'label',
+    valueAlias: 'value',
+    defaultPopUpProps: {},
+    defaultPopUpzIndex: 11500,
+    pickItemHeight: 0,
   };
 
   methods = {
     updateChildren() {
-      const { value } = this.properties;
+      const { pickItemHeight } = this.data;
+      const { value, defaultValue } = this.properties;
 
       this.$children.forEach((child, index) => {
         child.setData({
-          value: value?.[index] || '',
-          siblingCount: this.$children.length,
+          value: value?.[index] ?? defaultValue?.[index] ?? '',
+          columnIndex: index,
+          pickItemHeight,
         });
         child.update();
       });
@@ -68,7 +93,7 @@ export default class Picker extends SuperComponent {
       const [value, label] = this.getSelectedValue();
       const columns = this.getColumnIndexes();
 
-      this.close();
+      this.close('confirm-btn');
       this.triggerEvent('change', { value, label, columns });
       this.triggerEvent('confirm', { value, label, columns });
     },
@@ -79,21 +104,22 @@ export default class Picker extends SuperComponent {
     },
 
     onCancel() {
-      this.close();
+      this.close('cancel-btn');
       this.triggerEvent('cancel');
     },
 
     onPopupChange(e) {
       const { visible } = e.detail;
 
-      this.close();
+      this.close('overlay');
       this.triggerEvent('visible-change', { visible });
     },
 
-    close() {
+    close(trigger) {
       if (this.data.autoClose) {
         this.setData({ visible: false });
       }
+      this.triggerEvent('close', { trigger });
     },
   };
 

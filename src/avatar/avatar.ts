@@ -10,11 +10,9 @@ const name = `${prefix}-avatar`;
 export default class Avatar extends SuperComponent {
   options: WechatMiniprogram.Component.ComponentOptions = {
     multipleSlots: true,
-    styleIsolation: 'apply-shared',
   };
 
   externalClasses = [
-    'class',
     `${prefix}-class`,
     `${prefix}-class-image`,
     `${prefix}-class-icon`,
@@ -29,6 +27,7 @@ export default class Avatar extends SuperComponent {
     classPrefix: name,
     isShow: true,
     zIndex: 0,
+    borderedWithGroup: false,
   };
 
   relations: RelationsOptions = {
@@ -39,6 +38,7 @@ export default class Avatar extends SuperComponent {
 
         this.setData({
           size: this.data.size ?? parent.data.size,
+          borderedWithGroup: true,
         });
       },
     },

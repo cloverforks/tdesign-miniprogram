@@ -1,11 +1,3 @@
-/*
- * @Author: rileycai
- * @Date: 2021-09-22 10:33:54
- * @LastEditTime: 2021-09-28 10:26:44
- * @LastEditors: Please set LastEditors
- * @Description: 新增textarea组件
- * @FilePath: /tdesign-miniprogram/src/textarea/textarea.ts
- */
 import { SuperComponent, wxComponent } from '../common/src/index';
 import config from '../common/config';
 import props from './props';
@@ -17,7 +9,7 @@ const name = `${prefix}-textarea`;
 @wxComponent()
 export default class Textarea extends SuperComponent {
   options = {
-    multipleSlots: true, // 在组件定义时的选项中启用多slot支持
+    multipleSlots: true,
   };
 
   behaviors = ['wx://form-field'];
@@ -39,14 +31,14 @@ export default class Textarea extends SuperComponent {
 
   observers = {
     value(val) {
-      this.updateCount(val);
+      this.updateCount(val ?? this.properties.defaultValue);
     },
   };
 
   lifetimes = {
     ready() {
-      const { value } = this.properties;
-      this.updateValue(value);
+      const { value, defaultValue } = this.properties;
+      this.updateValue(value ?? defaultValue ?? '');
     },
   };
 
@@ -90,9 +82,9 @@ export default class Textarea extends SuperComponent {
     },
 
     onInput(event) {
-      const { value } = event.detail;
+      const { value, cursor } = event.detail;
       this.updateValue(value);
-      this.triggerEvent('change', { value: this.data.value });
+      this.triggerEvent('change', { value: this.data.value, cursor });
     },
     onFocus(event) {
       this.triggerEvent('focus', {
@@ -110,7 +102,7 @@ export default class Textarea extends SuperComponent {
       });
     },
     onLineChange(event) {
-      this.triggerEvent('lineChange', {
+      this.triggerEvent('line-change', {
         ...event.detail,
       });
     },

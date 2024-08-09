@@ -4,13 +4,13 @@
 
 @result-title-font-size: var(--td-result-title-font-size, @font-size-l);
 @result-title-line-height: var(--td-result-title-line-height, 56rpx);
-@result-title-color: var(--td-result-title-color, @font-gray-1);
+@result-title-color: var(--td-result-title-color, @text-color-primary);
 
 @result-description-font-size: var(--td-result-description-font-size, @font-size-base);
 @result-description-line-height: var(--td-result-description-line-height, 44rpx);
-@result-description-color: var(--td-result-description-color, @font-gray-2);
+@result-description-color: var(--td-result-description-color, @text-color-secondary);
 
-@result-icon-default-color: var(--td-result-icon-default-color, @primary-color);
+@result-icon-default-color: var(--td-result-icon-default-color, @brand-color);
 @result-icon-success-color: var(--td-result-icon-success-color, @success-color);
 @result-icon-warning-color: var(--td-result-icon-warning-color, @warning-color);
 @result-icon-error-color: var(--td-result-icon-error-color, @error-color);
@@ -34,7 +34,7 @@
     color: @result-title-color; // 标题颜色
   }
 
-  &__thumb + &__title:not(:empty) {
+  &__thumb:not(:empty) + &__title:not(:empty) {
     margin-top: @result-title-margin-top; // 标题内容上边距
   }
 

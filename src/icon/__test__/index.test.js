@@ -1,8 +1,30 @@
-import simulate from 'miniprogram-simulate';
 import path from 'path';
+import simulate from 'miniprogram-simulate';
 
 describe('icon', () => {
   const icon = load(path.resolve(__dirname, `../icon`));
+
+  it(`: style && customStyle`, async () => {
+    const id = simulate.load({
+      template: `<t-icon class="icon" style="{{style}}" customStyle="{{customStyle}}"></t-icon>`,
+      usingComponents: {
+        't-icon': icon,
+      },
+      data: {
+        style: 'color: red',
+        customStyle: 'font-size: 9px',
+      },
+    });
+    const comp = simulate.render(id);
+    comp.attach(document.createElement('parent-wrapper'));
+    const $icon = comp.querySelector('.icon >>> .t-icon');
+    // expect(comp.toJSON()).toMatchSnapshot();
+    if (VIRTUAL_HOST) {
+      expect($icon.dom.getAttribute('style').includes(`${comp.data.style}; ${comp.data.customStyle}`)).toBeTruthy();
+    } else {
+      expect($icon.dom.getAttribute('style').includes(`${comp.data.customStyle}`)).toBeTruthy();
+    }
+  });
 
   it(`icon :base`, () => {
     const id = simulate.load({
@@ -21,7 +43,7 @@ describe('icon', () => {
     expect($icon.dom.getAttribute('style').includes('font-size: 20px')).toBeTruthy();
   });
 
-  it(`icon :name`, () => {
+  it(`icon :name`, async () => {
     const id = simulate.load({
       template: `<t-icon class="icon" size="{{size}}" name="{{name}}"></t-icon>`,
       data: {
@@ -34,6 +56,8 @@ describe('icon', () => {
     });
     const comp = simulate.render(id);
     comp.attach(document.createElement('parent-wrapper'));
+
+    await simulate.sleep(10);
 
     const $image = comp.querySelector('.icon >>> .t-icon__image');
     expect($image).toBeTruthy();

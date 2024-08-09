@@ -1,10 +1,34 @@
-import simulate from 'miniprogram-simulate';
 import path from 'path';
+import simulate from 'miniprogram-simulate';
 
 describe('textarea', () => {
   const textarea = load(path.resolve(__dirname, `../textarea`), 't-textarea');
 
   describe('props', () => {
+    it(`: style && customStyle`, async () => {
+      const id = simulate.load({
+        template: `<t-textarea class="textarea" style="{{style}}" customStyle="{{customStyle}}"></t-textarea>`,
+        usingComponents: {
+          't-textarea': textarea,
+        },
+        data: {
+          style: 'color: red',
+          customStyle: 'font-size: 9px',
+        },
+      });
+      const comp = simulate.render(id);
+      comp.attach(document.createElement('parent-wrapper'));
+      const $textarea = comp.querySelector('.textarea >>> .t-textarea');
+      // expect(comp.toJSON()).toMatchSnapshot();
+      if (VIRTUAL_HOST) {
+        expect(
+          $textarea.dom.getAttribute('style').includes(`${comp.data.style}; ${comp.data.customStyle}`),
+        ).toBeTruthy();
+      } else {
+        expect($textarea.dom.getAttribute('style').includes(`${comp.data.customStyle}`)).toBeTruthy();
+      }
+    });
+
     it(': label', () => {
       const id = simulate.load({
         template: `<t-textarea
@@ -68,6 +92,7 @@ describe('textarea', () => {
       expect(component.instance.data.count).toBe(10);
       expect(handleChange.mock.calls[1][0].detail).toStrictEqual({
         value: 'textarea用',
+        cursor: undefined,
       });
 
       $textarea.dispatchEvent('textarea', { detail: { value: 'textarea用于567' } });
@@ -106,7 +131,7 @@ describe('textarea', () => {
         class="base"
         maxcharacter="{{maxcharacter}}"
         value="{{value}}"
-        bind:lineChange="handleLineChange"
+        bind:line-change="handleLineChange"
         >
         </t-textarea>`,
         data: {

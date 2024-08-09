@@ -3,7 +3,7 @@
 
 <import src="../common/template/image.wxml" />
 
-<view class="{{prefix}}-class {{classPrefix}}" style="{{style}}">
+<view class="class {{prefix}}-class {{classPrefix}}" style="{{_._style([style, customStyle])}}">
   <swiper
     class="{{classPrefix}}-host"
     autoplay="{{autoplay}}"
@@ -23,13 +23,16 @@
     <swiper-item
       wx:for="{{list}}"
       wx:key="index"
-      class="{{_.cls(classPrefix + '__item', [['preview', this.isPrev(current, index, list)], ['next', this.isNext(current, index, list)]])}}"
+      class="{{_.cls(classPrefix + '__item', [['preview', this.isPrev(navCurrent, index, list)], ['next', this.isNext(navCurrent, index, list)]])}}"
       data-index="{{index}}"
       bind:tap="onTap"
+      aria-hidden="{{navCurrent !== index}}"
+      aria-role="image"
+      aria-label="{{_.isObject(item) ? item.ariaLabel : ''}}"
     >
       <template
         is="image"
-        data="{{ class: classPrefix + '__image-host', tClass: this.getImageClass(prefix, current, index, list), style: 'height: ' + _.addUnit(height), src: item, ...imageProps }}"
+        data="{{ class: classPrefix + '__image-host', tClass: this.getImageClass(prefix, navCurrent, index, list), style: 'height: ' + _.addUnit(height), src: _.isObject(item) ? item.value : item, mode: 'aspectFill', dataset: index, ...imageProps, bindload: 'onImageLoad' }}"
       />
     </swiper-item>
   </swiper>
@@ -37,13 +40,14 @@
     wx:if="{{navigation}}"
     t-class="{{prefix}}-class-nav"
     type="{{navigation.type || 'dots'}}"
-    current="{{current}}"
-    total="{{list.length}}"
-    direction="{{direction}}"
-    pagination-position="{{paginationPosition}}"
+    current="{{navCurrent || 0}}"
+    total="{{list.length || 0}}"
+    direction="{{direction || 'horizontal'}}"
+    pagination-position="{{paginationPosition || 'bottom'}}"
     min-show-num="{{navigation.minShowNum || 2}}"
     show-controls="{{navigation.showControls || false}}"
-    bind:navBtnChange="onNavBtnChange"
+    bind:nav-btn-change="onNavBtnChange"
   />
+  <slot name="navigation" />
   <slot name="nav" />
 </view>

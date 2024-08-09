@@ -1,3 +1,4 @@
+<t-navbar title="Tabs" leftArrow />
 <view class="demo">
   <view class="demo-title">Tabs 选项卡</view>
   <view class="demo-desc">用于内容分类后的展示切换。</view>
@@ -6,6 +7,9 @@
   </t-demo>
   <t-demo desc="等距选项卡">
     <scroll />
+  </t-demo>
+  <t-demo desc="带图标选项卡">
+    <with-icon />
   </t-demo>
   <t-demo desc="带徽标选项卡">
     <with-badge />

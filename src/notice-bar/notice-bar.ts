@@ -1,10 +1,18 @@
 import { SuperComponent, wxComponent, ComponentsOptionsType } from '../common/src/index';
-import { getRect, getAnimationFrame, setIcon } from '../common/utils';
+import { getRect, getAnimationFrame, calcIcon } from '../common/utils';
 import props from './props';
 import config from '../common/config';
 
 const { prefix } = config;
 const name = `${prefix}-notice-bar`;
+
+// 主题图标
+const THEME_ICON = {
+  info: 'info-circle-filled',
+  success: 'check-circle-filled',
+  warning: 'info-circle-filled',
+  error: 'error-circle-filled',
+};
 
 @wxComponent()
 export default class NoticeBar extends SuperComponent {
@@ -12,13 +20,13 @@ export default class NoticeBar extends SuperComponent {
     `${prefix}-class`,
     `${prefix}-class-content`,
     `${prefix}-class-prefix-icon`,
-    `${prefix}-class-extra`,
+    `${prefix}-class-operation`,
     `${prefix}-class-suffix-icon`,
   ];
 
   options: ComponentsOptionsType = {
-    styleIsolation: 'apply-shared',
     multipleSlots: true,
+    pureDataPattern: /^__/,
   };
 
   properties = props;
@@ -27,6 +35,7 @@ export default class NoticeBar extends SuperComponent {
     prefix,
     classPrefix: name,
     loop: -1,
+    __ready: false,
   };
 
   observers = {
@@ -43,6 +52,7 @@ export default class NoticeBar extends SuperComponent {
     },
 
     visible(visible) {
+      if (!this.data.__ready) return;
       if (visible) {
         this.show();
       } else {
@@ -54,14 +64,14 @@ export default class NoticeBar extends SuperComponent {
       this.setPrefixIcon(prefixIcon);
     },
 
-    suffixIcon(suffixIcon) {
-      const obj = setIcon('suffixIcon', suffixIcon, '');
+    suffixIcon(v) {
       this.setData({
-        ...obj,
+        _suffixIcon: calcIcon(v),
       });
     },
 
     content() {
+      if (!this.data.__ready) return;
       this.clearNoticeBarAnimation();
       this.initAnimation();
     },
@@ -81,6 +91,7 @@ export default class NoticeBar extends SuperComponent {
 
     ready() {
       this.show();
+      this.setData({ __ready: true });
     },
   };
 
@@ -89,33 +100,32 @@ export default class NoticeBar extends SuperComponent {
       // 获取外部容器和滚动内容的宽度
       const warpID = `.${name}__content-wrap`;
       const nodeID = `.${name}__content`;
-      getAnimationFrame(() => {
-        Promise.all([getRect(this, nodeID), getRect(this, warpID)]).then(([nodeRect, wrapRect]) => {
-          const { marquee } = this.properties;
+      getAnimationFrame(this, () => {
+        Promise.all([getRect(this, nodeID), getRect(this, warpID)])
+          .then(([nodeRect, wrapRect]) => {
+            const { marquee } = this.properties;
 
-          if (nodeRect == null || wrapRect == null || !nodeRect.width || !wrapRect.width) {
-            return;
-          }
+            if (nodeRect == null || wrapRect == null || !nodeRect.width || !wrapRect.width) {
+              return;
+            }
 
-          if (marquee || wrapRect.width < nodeRect.width) {
-            const speeding = marquee.speed || 50;
-            const delaying = marquee.delay || 0;
-            const loops = marquee.loop - 1 || -1;
-            const animationDuration = ((wrapRect.width + nodeRect.width) / speeding) * 1000;
-            const firstAnimationDuration = (nodeRect.width / speeding) * 1000;
-
-            this.setData({
-              wrapWidth: Number(wrapRect.width),
-              nodeWidth: Number(nodeRect.width),
-              animationDuration: animationDuration,
-              delay: delaying,
-              loop: loops,
-              firstAnimationDuration: firstAnimationDuration,
-            });
-
-            this.startScrollAnimation(true);
-          }
-        });
+            if (marquee || wrapRect.width < nodeRect.width) {
+              const speeding = marquee.speed || 50;
+              const delaying = marquee.delay || 0;
+              const animationDuration = ((wrapRect.width + nodeRect.width) / speeding) * 1000;
+              const firstAnimationDuration = (nodeRect.width / speeding) * 1000;
+              this.setData({
+                wrapWidth: Number(wrapRect.width),
+                nodeWidth: Number(nodeRect.width),
+                animationDuration: animationDuration,
+                delay: delaying,
+                loop: marquee.loop - 1,
+                firstAnimationDuration: firstAnimationDuration,
+              });
+              marquee.loop !== 0 && this.startScrollAnimation(true);
+            }
+          })
+          .catch(() => {});
       });
     },
 
@@ -134,7 +144,7 @@ export default class NoticeBar extends SuperComponent {
           .export(),
       });
 
-      getAnimationFrame(() => {
+      getAnimationFrame(this, () => {
         // 滚动内容: 最终位置
         this.setData({
           animationData: wx
@@ -171,11 +181,16 @@ export default class NoticeBar extends SuperComponent {
       this.nextAnimationContext = null;
     },
 
-    setPrefixIcon(prefixIcon) {
-      const obj = setIcon('prefixIcon', prefixIcon, 'error-circle-filled');
+    setPrefixIcon(v) {
+      const { theme } = this.properties;
       this.setData({
-        ...obj,
+        _prefixIcon: calcIcon(v, THEME_ICON[theme]),
       });
+    },
+
+    onChange(e: WechatMiniprogram.SwiperChange) {
+      const { current, source } = e.detail;
+      this.triggerEvent('change', { current, source });
     },
 
     clickPrefixIcon() {
@@ -190,8 +205,8 @@ export default class NoticeBar extends SuperComponent {
       this.triggerEvent('click', { trigger: 'suffix-icon' });
     },
 
-    clickExtra() {
-      this.triggerEvent('click', { trigger: 'extra' });
+    clickOperation() {
+      this.triggerEvent('click', { trigger: 'operation' });
     },
   };
 }

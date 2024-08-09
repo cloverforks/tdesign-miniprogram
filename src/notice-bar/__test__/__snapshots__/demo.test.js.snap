@@ -3,10 +3,15 @@
 exports[`NoticeBar NoticeBar base demo works fine 1`] = `
 <base>
   <t-notice-bar
-    content="这是一条普通的通知信息"
     prefixIcon="{{false}}"
     visible="{{true}}"
-  />
+  >
+    <wx-view
+      slot="content"
+    >
+      这是一条普通的通知信息
+    </wx-view>
+  </t-notice-bar>
 </base>
 `;
 
@@ -29,26 +34,27 @@ exports[`NoticeBar NoticeBar customization demo works fine 1`] = `
     visible="{{true}}"
   >
     <wx-view
+      class="inline"
       slot="content"
     >
-      
-    提示文字描述提示文字描述提示文字描述提示文字描述提示文字描述提示文字描述
-    
-      <wx-view
-        class="extra"
-        bind:tap="clickDetail"
-      >
-         详情 
-      </wx-view>
+       提示文字描述提示文字描述提示文字描述提示文字描述提示文字描述提示文字描述 
     </wx-view>
-    <wx-view
-      slot="suffixIcon"
-    >
-      <t-icon
-        name="close"
-        size="44rpx"
-      />
-    </wx-view>
+    <t-link
+      content="详情"
+      navigatorProps="{{
+        Object {
+          "url": "/pages/xxx/xxx",
+        }
+      }}"
+      slot="operation"
+      theme="primary"
+      underline="{{false}}"
+    />
+    <t-icon
+      name="close"
+      size="44rpx"
+      slot="suffix-icon"
+    />
   </t-notice-bar>
 </customization>
 `;
@@ -56,50 +62,34 @@ exports[`NoticeBar NoticeBar customization demo works fine 1`] = `
 exports[`NoticeBar NoticeBar event demo works fine 1`] = `
 <event>
   <t-notice-bar
-    content="这是一条普通的通知信息"
-    suffixIcon="close"
+    suffixIcon="chevron-right"
     visible="{{true}}"
     bind:click="click"
-  />
+  >
+    <wx-view
+      class="inline"
+      slot="content"
+    >
+       这是一条普通的通知信息 
+    </wx-view>
+    <t-link
+      content="详情"
+      navigatorProps="{{
+        Object {
+          "url": "/pages/xxx/xxx",
+        }
+      }}"
+      slot="operation"
+      theme="primary"
+      underline="{{false}}"
+    />
+  </t-notice-bar>
   <t-notice-bar
     content="这是一条普通的通知信息"
     suffixIcon="chevron-right"
     visible="{{true}}"
     bind:click="click"
   />
-  <t-notice-bar
-    visible="{{true}}"
-    bind:click="click"
-  >
-    <wx-view
-      slot="content"
-    >
-       这是一条普通的通知信息 
-    </wx-view>
-    <wx-view
-      class="extra"
-      slot="extra"
-    >
-      文字按钮
-    </wx-view>
-  </t-notice-bar>
-  <t-notice-bar
-    suffixIcon="close"
-    visible="{{true}}"
-    bind:click="click"
-  >
-    <wx-view
-      slot="content"
-    >
-       这是一条普通的通知信息 
-    </wx-view>
-    <wx-view
-      class="extra"
-      slot="extra"
-    >
-      详情
-    </wx-view>
-  </t-notice-bar>
 </event>
 `;
 
@@ -107,10 +97,11 @@ exports[`NoticeBar NoticeBar iconDemo demo works fine 1`] = `
 <iconDemo>
   <t-notice-bar
     content="提示文字描述提示文字描述提示文字描述"
+    prefixIcon="{{false}}"
     visible="{{true}}"
   >
     <wx-view
-      slot="prefixIcon"
+      slot="prefix-icon"
     >
       <t-icon
         name="error-circle-filled"
@@ -156,11 +147,23 @@ exports[`NoticeBar NoticeBar scrolling demo works fine 1`] = `
       ]
     }}"
     direction="vertical"
+    interval="{{3000}}"
     prefixIcon="sound"
     visible="{{true}}"
     bind:click="click"
   />
 </scrolling>
+`;
+
+exports[`NoticeBar NoticeBar suffixIcon demo works fine 1`] = `
+<suffixIcon>
+  <t-notice-bar
+    content="这是一条普通的通知信息"
+    suffixIcon="close"
+    visible="{{true}}"
+    bind:click="click"
+  />
+</suffixIcon>
 `;
 
 exports[`NoticeBar NoticeBar theme demo works fine 1`] = `

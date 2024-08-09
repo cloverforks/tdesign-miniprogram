@@ -21,27 +21,29 @@ const props: TdRateProps = {
     type: Number,
     value: 5,
   },
-  /** 自定义组件样式 */
-  style: {
-    type: String,
-    value: '',
-  },
   /** 是否禁用评分 */
   disabled: {
-    type: Boolean,
-  },
-  /** 组件类名，分别用于设置 组件外层类名、评分图标类名、辅助文字类名。 */
-  externalClasses: {
-    type: Array,
+    type: null,
+    value: undefined,
   },
   /** 评分图标的间距 */
   gap: {
     type: null,
     value: 8,
   },
-  /** 自定义评分图标，[选中图标，未选中图标]；此时不受 variant 影响 */
+  /** 自定义评分图标，[选中图标，未选中图标] */
   icon: {
     type: null,
+  },
+  /** 定义图标前缀 */
+  iconPrefix: {
+    type: String,
+    value: undefined,
+  },
+  /** 选择评分弹框的位置，值为空字符表示不显示评分弹窗 */
+  placement: {
+    type: String,
+    value: 'top',
   },
   /** 是否显示对应的辅助文字 */
   showText: {
@@ -68,7 +70,7 @@ const props: TdRateProps = {
     type: Number,
     value: 0,
   },
-  /** 形状类型，有描边类型和填充类型两种 */
+  /** 已废弃。形状类型，有描边类型和填充类型两种 */
   variant: {
     type: String,
     value: 'outline',

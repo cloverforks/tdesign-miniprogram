@@ -1,6 +1,7 @@
 import { SuperComponent, RelationsOptions, wxComponent } from '../common/src/index';
 import config from '../common/config';
 import props from './props';
+import { calcIcon } from '../common/utils';
 
 const { prefix } = config;
 const name = `${prefix}-back-top`;
@@ -24,44 +25,40 @@ export default class BackTop extends SuperComponent {
   data = {
     prefix,
     classPrefix: name,
+    _icon: null,
+    hidden: true,
   };
 
   observers = {
     icon() {
       this.setIcon();
     },
+
+    scrollTop(value: number) {
+      const { visibilityHeight } = this.properties;
+      this.setData({ hidden: value < visibilityHeight });
+    },
   };
 
   lifetimes = {
     ready() {
-      this.setIcon();
+      const { icon } = this.properties;
+      this.setIcon(icon);
     },
   };
 
   methods = {
-    setIcon() {
-      const { icon } = this.properties;
-      if (!icon) {
-        this.setData({ iconName: '', iconData: {} });
-      } else if (typeof icon === 'string') {
-        this.setData({
-          iconName: icon,
-          iconData: {},
-        });
-      } else if (typeof icon === 'object') {
-        this.setData({
-          iconName: '',
-          iconData: icon,
-        });
-      } else {
-        this.setData({ iconName: 'backtop', iconData: {} });
-      }
+    setIcon(v) {
+      this.setData({
+        _icon: calcIcon(v, 'backtop'),
+      });
     },
 
     toTop() {
       this.triggerEvent('to-top');
       if (this.$parent) {
         this.$parent?.setScrollTop(0);
+        this.setData({ hidden: true });
       } else {
         wx.pageScrollTo({
           scrollTop: 0,

@@ -5,6 +5,8 @@ module.exports = {
   moduleFileExtensions: ['js', 'ts'],
   moduleNameMapper: {
     '^tdesign-miniprogram/(.*)': '<rootDir>/src/$1',
+    '^tdesign-miniprogram': '<rootDir>/src/index',
+    '^@behaviors/(.*)': '<rootDir>/example/behaviors/$1',
   },
   testMatch: ['<rootDir>/src/**/__test__/**/*.test.{js,ts}'],
   collectCoverageFrom: ['<rootDir>/src/**/*.{js,ts}', '!**/__test__/**', '!**/_example/**'],
@@ -25,9 +27,6 @@ module.exports = {
   coverageReporters: ['html', 'json-summary'],
   globals: {
     CONFIG_PREFIX: 't',
-  },
-  transform: {
-    '\\.[jt]sx?$': ['<rootDir>/script/test/transform.js'],
   },
   globalSetup: '<rootDir>/script/test/globalSetup.js',
   snapshotSerializers: ['miniprogram-simulate/jest-snapshot-plugin'],

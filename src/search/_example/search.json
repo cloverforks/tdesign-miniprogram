@@ -2,7 +2,9 @@
   "navigationBarTitleText": "Search",
   "usingComponents": {
     "base": "./base",
-    "status": "./status",
+    "maxlength": "./maxlength",
+    "action": "./action",
+    "shape": "./shape",
     "other": "./other"
   }
 }

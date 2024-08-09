@@ -1,5 +1,5 @@
 ---
-title: Sticky 吸顶容器
+title: Sticky 吸顶
 description: 用于常驻页面顶部的信息、操作展示。
 spline: data
 isComponent: true
@@ -22,6 +22,13 @@ isComponent: true
 
 <img src="https://tdesign.gtimg.com/miniprogram/readme/sticky.gif" width="375px" height="50%">
 
+
+<a href="https://developers.weixin.qq.com/s/mJ7HTiml7NSM" title="在开发者工具中预览效果" target="_blank" rel="noopener noreferrer"> 在开发者工具中预览效果 </a>
+
+<blockquote style="background-color: #d9e1ff; font-size: 15px; line-height: 26px;margin: 16px 0 0;padding: 16px; border-radius: 6px; color: #0052d9" >
+<p>Tips: 请确保开发者工具为打开状态。导入开发者工具后，依次执行：npm i > 构建npm包 > 勾选 "将JS编译成ES5"</p>
+</blockquote>
+
 ### 基础吸顶
 
 {{ base }}
@@ -43,9 +50,7 @@ isComponent: true
 名称 | 类型 | 默认值 | 说明 | 必传
 -- | -- | -- | -- | --
 container | Function | - | 函数返回容器对应的 NodesRef 节点，将对应节点指定为组件的外部容器，滚动时组件会始终保持在容器范围内，当组件即将超出容器底部时，会返回原位置。 | N
-custom-style `v0.25.0` | String | - | 自定义组件样式 | N
 disabled | Boolean | false | 是否禁用组件 | N
-external-classes | Array | - | 根结点外部样式。`['t-class']` | N
 offset-top | String / Number | 0 | 吸顶时与顶部的距离，单位`px` | N
 z-index | Number | 99 | 吸顶时的 z-index | N
 
@@ -54,3 +59,9 @@ z-index | Number | 99 | 吸顶时的 z-index | N
 名称 | 参数 | 描述
 -- | -- | --
 scroll | `(detail: { scrollTop: number, isFixed: boolean })` | 滚动时触发，scrollTop: 距离顶部位置，isFixed: 是否吸顶
+
+### Sticky 外部样式类
+类名 | 说明
+-- | -- 
+t-class | 根节点样式类
+t-class-content | 内容样式类

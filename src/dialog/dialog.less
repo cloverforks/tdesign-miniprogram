@@ -9,42 +9,40 @@
 
 // color
 @dialog-title-font-size: var(--td-dialog-title-font-size, 36rpx);
-@dialog-title-color: var(--td-dialog-title-color, @font-gray-1);
+@dialog-title-color: var(--td-dialog-title-color, @text-color-primary);
 @dialog-title-line-height: var(--td-dialog-title-line-height, 52rpx);
 
 @dialog-content-font-size: var(--td-dialog-content-font-size, 32rpx);
-@dialog-content-color: var(--td-dialog-content-color, @font-gray-2);
+@dialog-content-color: var(--td-dialog-content-color, @text-color-secondary);
 @dialog-content-line-height: var(--td-dialog-content-line-height, 48rpx);
 
-@dialog-close-color: var(--td-dialog-close-color, @font-gray-3);
-
-@dialog-input-bg-color: var(--td-dialog-input-bg-color, @gray-color-1);
-@dialog-input-raidus: var(--td-dialog-input-raidus, 8rpx);
-@dialog-input-height: var(--td-dialog-input-height, 96rpx);
-@dialog-input-placeholder-color: var(--td-dialog-input-placeholder-color, @font-gray-3);
+@dialog-close-color: var(--td-dialog-close-color, @text-color-placeholder);
 
 .@{dialog} {
   overflow: hidden;
   width: @dialog-width;
-  border-radius: @border-radius;
-  background-color: @bg-color-block;
+  border-radius: @radius-default;
+  background-color: @bg-color-container;
 
   &__close-btn {
     position: absolute;
     top: 16rpx;
     right: 16rpx;
     color: @dialog-close-color;
+    z-index: 1; /* skyline适配新增 */
   }
 
   &__content {
-    padding: @spacer-4 @spacer-3 0;
+    padding-top: @spacer-4;
+    padding-right: @spacer-3;
+    padding-bottom: 0;
+    padding-left: @spacer-3;
     max-height: @dialog-body-max-height;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     justify-content: center;
     font-size: @font-size-m;
-    line-height: @text-line-height;
   }
 
   &__header {
@@ -97,14 +95,6 @@
     }
   }
 
-  &-button {
-    border-radius: 0 !important;
-
-    &:after {
-      border-radius: 0;
-    }
-  }
-
   &__button {
     position: relative;
     flex: 1;
@@ -122,6 +112,7 @@
 
     &--text {
       flex: 1;
+      --td-button-border-radius: 0;
       --td-button-medium-height: 112rpx;
       border-radius: 0;
 
@@ -131,8 +122,8 @@
         box-sizing: border-box;
         top: 0;
         left: 0;
-        border-top: 1px solid @border-color;
-        border-left: 1px solid @border-color;
+        border-top: 1px solid @border-level-1-color;
+        border-left: 1px solid @border-level-1-color;
         transform: scale(0.5);
         transform-origin: 0 0;
         width: 200%;
@@ -140,22 +131,5 @@
         border-radius: 0;
       }
     }
-  }
-
-  input {
-    height: @dialog-input-height;
-    padding: 0 24rpx;
-    text-align: left;
-    margin-top: 32rpx;
-    border-radius: @dialog-input-raidus;
-    background-color: @dialog-input-bg-color;
-  }
-
-  .placeholder {
-    color: @dialog-input-placeholder-color;
-    line-height: @dialog-input-height;
-    // height: 96rpx !important;
-    // display: flex;
-    // align-items: center;
   }
 }

@@ -5,7 +5,7 @@ exports[`textarea slots : label 1`] = `
   class="base"
 >
   <wx-view
-    class="t-textarea  t-class"
+    class="t-textarea  class t-class"
     style=""
   >
     <wx-view
@@ -41,6 +41,7 @@ exports[`textarea slots : label 1`] = `
         selectionEnd="{{-1}}"
         selectionStart="{{-1}}"
         showConfirmBar="{{true}}"
+        style=""
         value=""
         bind:blur="onBlur"
         bind:confirm="onConfirm"

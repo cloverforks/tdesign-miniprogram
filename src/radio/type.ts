@@ -9,7 +9,7 @@ export interface TdRadioProps<T = RadioValue> {
    * 复选框和内容相对位置
    * @default left
    */
-  align?: {
+  placement?: {
     type: StringConstructor;
     value?: 'left' | 'right';
   };
@@ -67,6 +67,14 @@ export interface TdRadioProps<T = RadioValue> {
   style?: {
     type: StringConstructor;
     value?: string;
+  };
+  /**
+   * 只读状态
+   * @default false
+   */
+  readonly?: {
+    type: BooleanConstructor;
+    value?: boolean;
   };
   /**
    * 是否为禁用态

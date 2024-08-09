@@ -1,4 +1,4 @@
-import { styles, setIcon } from '../common/utils';
+import { styles, calcIcon } from '../common/utils';
 import { SuperComponent, wxComponent } from '../common/src/index';
 import config from '../common/config';
 import props from './props';
@@ -20,7 +20,9 @@ export default class ImageViewer extends SuperComponent {
     currentSwiperIndex: 0,
     windowHeight: 0,
     windowWidth: 0,
-    imagesShape: {},
+    swiperStyle: {},
+    imagesStyle: {},
+    maskTop: 0,
   };
 
   options = {
@@ -36,6 +38,7 @@ export default class ImageViewer extends SuperComponent {
 
   ready() {
     this.saveScreenSize();
+    this.calcMaskTop();
   }
 
   observers = {
@@ -45,22 +48,32 @@ export default class ImageViewer extends SuperComponent {
       });
     },
 
-    closeBtn(closeBtn) {
-      const obj = setIcon('closeBtn', closeBtn, 'close');
+    closeBtn(v) {
       this.setData({
-        ...obj,
+        _closeBtn: calcIcon(v, 'close'),
       });
     },
 
-    deleteBtn(deleteBtn) {
-      const obj = setIcon('deleteBtn', deleteBtn, 'delete');
+    deleteBtn(v) {
       this.setData({
-        ...obj,
+        _deleteBtn: calcIcon(v, 'delete'),
       });
     },
   };
 
   methods = {
+    calcMaskTop() {
+      if (this.data.usingCustomNavbar) {
+        const rect = wx?.getMenuButtonBoundingClientRect() || null;
+        const { statusBarHeight } = wx.getSystemInfoSync();
+
+        if (rect && statusBarHeight) {
+          this.setData({
+            maskTop: rect.top - statusBarHeight + rect.bottom,
+          });
+        }
+      }
+    },
     saveScreenSize() {
       const { windowHeight, windowWidth } = wx.getSystemInfoSync();
       this.setData({
@@ -92,12 +105,24 @@ export default class ImageViewer extends SuperComponent {
           },
         };
       }
+
+      // 图片的高大于宽（纵向图），设定高度为100vh，宽度自适应，且确保宽度不超过屏幕宽度
+      const scaledHeight = ratio * windowHeight * 2;
+      if (scaledHeight < windowWidth) {
+        return {
+          styleObj: {
+            width: `${scaledHeight}rpx`,
+            height: '100vh',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+          },
+        };
+      }
+      // 当通过高度计算的图片宽度超过屏幕宽度时, 以屏幕宽度为基准, 重新计算高度
       return {
         styleObj: {
-          width: `${ratio * windowHeight * 2}rpx`,
-          height: '100vh',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
+          width: '100vw',
+          height: `${(windowWidth / imageWidth) * imageHeight * 2}rpx`,
         },
       };
     },
@@ -110,10 +135,17 @@ export default class ImageViewer extends SuperComponent {
         },
       } = e;
       const { mode, styleObj } = this.calcImageDisplayStyle(width, height);
-      const origin = this.data.imagesShape;
+      const originImagesStyle = this.data.imagesStyle;
+      const originSwiperStyle = this.data.swiperStyle;
       this.setData({
-        imagesShape: {
-          ...origin,
+        swiperStyle: {
+          ...originSwiperStyle,
+          [index]: {
+            style: `height: ${styleObj.height}`,
+          },
+        },
+        imagesStyle: {
+          ...originImagesStyle,
           [index]: {
             mode,
             style: styles({ ...styleObj }),
@@ -132,8 +164,9 @@ export default class ImageViewer extends SuperComponent {
       this._trigger('change', { index: current });
     },
 
-    onClose() {
-      this._trigger('close', { visible: false, trigger: 'button', index: this.data.currentSwiperIndex });
+    onClose(e) {
+      const { source } = e.currentTarget.dataset;
+      this._trigger('close', { visible: false, trigger: source || 'button', index: this.data.currentSwiperIndex });
     },
 
     onDelete() {

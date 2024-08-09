@@ -1,4 +1,4 @@
-const image = 'https://tdesign.gtimg.com/miniprogram/images/example1.png';
+const image = 'https://tdesign.gtimg.com/mobile/demos/example1.png';
 const items = new Array(12).fill({ label: '标题文字', image }, 0, 12);
 
 Page({
@@ -8,47 +8,52 @@ Page({
     scrollTop: 0,
     categories: [
       {
-        label: '选项选项',
-        title: '标题',
+        label: '选项一',
+        title: '标题一',
+        badgeProps: {},
         items,
       },
       {
-        label: '选项',
-        title: '标题',
+        label: '选项二',
+        title: '标题二',
         badgeProps: {
           dot: true,
         },
         items: items.slice(0, 9),
       },
       {
-        label: '选项',
-        title: '标题',
+        label: '选项三',
+        title: '标题三',
+        badgeProps: {},
         items: items.slice(0, 9),
       },
       {
-        label: '选项',
-        title: '标题',
+        label: '选项四',
+        title: '标题四',
         badgeProps: {
           count: 6,
         },
         items: items.slice(0, 6),
       },
       {
-        label: '选项',
-        title: '标题',
+        label: '选项五',
+        title: '标题五',
+        badgeProps: {},
         items: items.slice(0, 3),
       },
     ],
+    navbarHeight: 0,
   },
   onLoad() {
     const query = wx.createSelectorQuery().in(this);
-
-    query
-      .selectAll('.title')
-      .boundingClientRect((rects) => {
-        this.offsetTopList = rects.map((item) => item.top);
-      })
-      .exec();
+    const { sideBarIndex } = this.data;
+    query.selectAll('.title').boundingClientRect();
+    query.select('.custom-navbar').boundingClientRect();
+    query.exec((res) => {
+      const [rects, { height: navbarHeight }] = res;
+      this.offsetTopList = rects.map((item) => item.top - navbarHeight);
+      this.setData({ navbarHeight, scrollTop: this.offsetTopList[sideBarIndex] });
+    });
   },
   onSideBarChange(e) {
     const { value } = e.detail;

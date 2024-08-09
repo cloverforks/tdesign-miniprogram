@@ -8,19 +8,11 @@ import { StickyProps } from '../sticky/index';
 
 export interface TdTabsProps {
   /**
-   * 动画效果设置。其中 duration 表示动画时长
+   * 动画效果设置。其中 duration 表示动画时长。（单位：秒）
    */
   animation?: {
     type: ObjectConstructor;
     value?: TabAnimation;
-  };
-  /**
-   * 自定义组件样式
-   * @default ''
-   */
-  style?: {
-    type: StringConstructor;
-    value?: string;
   };
   /**
    * 组件类名，分别用于设置 组件外层元素、选项卡单项、选项卡激活态、滚动条样式类名 等类名
@@ -28,15 +20,6 @@ export interface TdTabsProps {
   externalClasses?: {
     type: ArrayConstructor;
     value?: ['t-class', 't-class-item', 't-class-active', 't-class-track'];
-  };
-  /**
-   * 选项卡位置
-   * @default top
-   * @deprecated
-   */
-  placement?: {
-    type: StringConstructor;
-    value?: 'left' | 'top';
   };
   /**
    * 是否展示底部激活线条
@@ -51,6 +34,14 @@ export interface TdTabsProps {
    * @default true
    */
   spaceEvenly?: {
+    type: BooleanConstructor;
+    value?: boolean;
+  };
+  /**
+   * 是否展示分割线
+   * @default true
+   */
+  split?: {
     type: BooleanConstructor;
     value?: boolean;
   };

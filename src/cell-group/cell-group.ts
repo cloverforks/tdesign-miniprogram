@@ -1,4 +1,4 @@
-import { SuperComponent, wxComponent } from '../common/src/index';
+import { SuperComponent, wxComponent, RelationsOptions } from '../common/src/index';
 import config from '../common/config';
 import props from './props';
 
@@ -9,8 +9,16 @@ const name = `${prefix}-cell-group`;
 export default class CellGroup extends SuperComponent {
   externalClasses = [`${prefix}-class`, `${prefix}-class-title`];
 
-  options = {
-    addGlobalClass: true,
+  relations: RelationsOptions = {
+    '../cell/cell': {
+      type: 'child',
+      linked() {
+        this.updateLastChid();
+      },
+      unlinked() {
+        this.updateLastChid();
+      },
+    },
   };
 
   /**
@@ -24,5 +32,12 @@ export default class CellGroup extends SuperComponent {
   data = {
     prefix,
     classPrefix: name,
+  };
+
+  methods = {
+    updateLastChid() {
+      const items = this.$children;
+      items.forEach((child, index) => child.setData({ isLastChild: index === items.length - 1 }));
+    },
   };
 }

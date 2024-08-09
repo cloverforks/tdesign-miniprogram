@@ -1,7 +1,8 @@
 {
   "component": true,
+  "styleIsolation": "apply-shared",
   "usingComponents": {
-    "t-icon": "tdesign-miniprogram/icon/icon",
-    "t-loading": "tdesign-miniprogram/loading/loading"
+    "t-icon": "../icon/icon",
+    "t-loading": "../loading/loading"
   }
 }

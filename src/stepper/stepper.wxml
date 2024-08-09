@@ -1,4 +1,9 @@
-<view style="{{ style }}" class="{{classPrefix}} {{classPrefix}}--{{size}} {{prefix}}-class">
+<wxs src="../common/utils.wxs" module="_" />
+
+<view
+  style="{{_._style([style, customStyle])}}"
+  class="{{classPrefix}} {{classPrefix}}--{{size}} class {{prefix}}-class"
+>
   <view
     class="{{classPrefix}}__minus {{classPrefix}}__minus--{{theme}} {{classPrefix}}__icon--{{size}} {{ disabled || disableMinus || currentValue <= min ? classPrefix + '--' + theme + '-disabled': ''}} {{prefix}}-class-minus"
     catchtap="minusValue"
@@ -15,9 +20,9 @@
       disabled="{{ disabled || disableInput }}"
       type="number"
       value="{{ currentValue }}"
-      catchinput="inputHandle"
-      catchfocus="focusHandle"
-      catchblur="blurHandle"
+      catchinput="handleInput"
+      catchfocus="handleFocus"
+      catchblur="handleBlur"
     />
   </view>
   <view

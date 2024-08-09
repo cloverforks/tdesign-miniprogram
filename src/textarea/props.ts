@@ -18,7 +18,7 @@ const props: TdTextareaProps = {
   },
   /** 是否自动增高，值为 autosize 时，style.height 不生效 */
   autosize: {
-    type: Boolean,
+    type: null,
     value: false,
   },
   /** 点击键盘右下角按钮时是否保持键盘不收起点 */
@@ -35,11 +35,6 @@ const props: TdTextareaProps = {
   cursorSpacing: {
     type: Number,
     value: 0,
-  },
-  /** 自定义组件样式 */
-  style: {
-    type: String,
-    value: '',
   },
   /** 是否禁用文本框 */
   disabled: {

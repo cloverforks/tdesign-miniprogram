@@ -14,6 +14,12 @@ const DEFAULT_TABS = [
   { tab: 'design', name: '指南' },
 ];
 
+const DEFAULT_EN_TABS = [
+  { tab: 'demo', name: 'DEMO' },
+  { tab: 'api', name: 'API' },
+  { tab: 'design', name: 'Guideline' },
+];
+
 export default function mdToVue(options: any) {
   const mdSegment = customRender(options);
   const { demoCodesImportsStr = '', demoCodesDefsStr } = options;
@@ -44,7 +50,7 @@ export default function mdToVue(options: any) {
 // 解析 markdown 内容
 function customRender({ source, file, md }: any) {
   const { content, data } = matter(source);
-  // console.log('data', data);
+  const isEn = file.endsWith('en-US.md');
 
   // md top data
   const pageData = {
@@ -54,7 +60,7 @@ function customRender({ source, file, md }: any) {
     description: '',
     isComponent: false,
     tdDocHeader: true,
-    tdDocTabs: DEFAULT_TABS,
+    tdDocTabs: !isEn ? DEFAULT_TABS : DEFAULT_EN_TABS,
     apiFlag: /#+\s*API\n/i,
     docClass: '',
     lastUpdated: Math.round(fs.statSync(file).mtimeMs),
@@ -62,7 +68,7 @@ function customRender({ source, file, md }: any) {
   };
 
   // md filename
-  const reg = file.match(/src\/(\w+-?\w+)\/(\w+-?\w+)\.md/);
+  const reg = file.match(/src\/(\S*)(?=\/\S*.md)/);
   const componentName = reg && reg[1];
 
   // split md
@@ -79,14 +85,20 @@ function customRender({ source, file, md }: any) {
 
   if (pageData.isComponent) {
     mdSegment.demoMd = md.render.call(md, `${demoMd.replace(/<!--[\s\S]+?-->/g, '')}`).html;
-    mdSegment.apiMd = md.render.call(md, `${pageData.toc ? '[toc]\n' : ''}${apiMd.replace(/<!--[\s\S]+?-->/g, '')}`).html;
+    mdSegment.apiMd = md.render.call(
+      md,
+      `${pageData.toc ? '[toc]\n' : ''}${apiMd.replace(/<!--[\s\S]+?-->/g, '')}`,
+    ).html;
   } else {
-    mdSegment.docMd = md.render.call(md, `${pageData.toc ? '[toc]\n' : ''}${content.replace(/<!--[\s\S]+?-->/g, '')}`).html;
+    mdSegment.docMd = md.render.call(
+      md,
+      `${pageData.toc ? '[toc]\n' : ''}${content.replace(/<!--[\s\S]+?-->/g, '')}`,
+    ).html;
   }
 
   // 设计指南内容 不展示 design Tab 则不解析
   if (pageData.isComponent && pageData.tdDocTabs.some((item) => item.tab === 'design')) {
-    const designDocPath = path.resolve(__dirname, `../../src/_common/docs/miniprogram/design/${componentName}.md`);
+    const designDocPath = path.resolve(__dirname, `../../src/_common/docs/mobile/design/${componentName}.md`);
 
     if (fs.existsSync(designDocPath)) {
       const designMd = fs.readFileSync(designDocPath, 'utf-8');

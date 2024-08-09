@@ -1,6 +1,10 @@
+import SkylineBehavior from '@behaviors/skyline.js';
+
 Component({
+  behaviors: [SkylineBehavior],
   data: {
     placement: 'left',
+    sidebar: [],
     baseSidebar: [
       {
         title: '菜单一',

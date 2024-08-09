@@ -2,7 +2,8 @@
 
 @loading: ~'@{prefix}-loading';
 
-@loading-color: var(--td-loading-color, @primary-color);
+@loading-color: var(--td-loading-color, @brand-color);
+@loading-text-color: var(--td-loading-text-color, @text-color-primary);
 @loading-text-font-size: var(--td-loading-text-font-size, 24rpx);
 @loading-text-line-height: var(--td-loading-text-line-height, 40rpx);
 
@@ -28,7 +29,7 @@
 
     &--spinner {
       animation-timing-function: steps(12);
-      color: @font-gray-1;
+      color: @text-color-primary;
 
       .@{loading}__dot {
         position: absolute;
@@ -42,7 +43,7 @@
           width: 5rpx;
           height: 25%;
           margin: 0 auto;
-          background-color: currentColor;
+          background-color: @loading-color;
           border-radius: 40%;
           content: ' ';
         }
@@ -78,7 +79,7 @@
         width: 20%;
         height: 20%;
         border-radius: 50%;
-        background-color: currentColor;
+        background-color: @loading-color;
         animation-duration: 1.8s;
         animation-name: dotting;
         animation-timing-function: linear;
@@ -89,6 +90,7 @@
   }
 
   &__text {
+    color: @loading-text-color;
     font-size: @loading-text-font-size;
     line-height: @loading-text-line-height;
 
@@ -108,34 +110,6 @@
   &--horizontal {
     flex-direction: row;
     vertical-align: top;
-  }
-
-  &__refresh-btn {
-    margin-left: 16rpx;
-    color: @loading-color;
-  }
-
-  &__bar {
-    height: 6rpx;
-    width: 80%;
-    transition: 0.5s;
-    background-color: @loading-color;
-    display: none;
-
-    &--static {
-      display: block;
-    }
-
-    &--loaded {
-      opacity: 0;
-      height: 0;
-      animation: t-bar-loaded 1s ease-out;
-    }
-
-    &--animation {
-      animation: t-bar 8s linear;
-      display: block;
-    }
   }
 }
 
@@ -174,7 +148,7 @@
 }
 
 .generate(@n, @i: 1) when (@i =< @n) {
-  .@{loading}__dot:nth-of-type(@{i}) {
+  .@{loading}__dot-@{i} {
     transform: rotate(@i * 30deg);
     opacity: (1 / 12) * (@i - 1);
   }

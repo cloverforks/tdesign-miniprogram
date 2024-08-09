@@ -1,7 +1,8 @@
 <wxs src="../common/utils.wxs" module="_" />
+
 <view
-  style="{{ style }}"
-  class="{{_.cls(classPrefix + '__group', [['narrow', siblingCount > 4], ['roomy', siblingCount <= 2]])}}"
+  style="{{_._style([style, customStyle])}}"
+  class="{{_.cls(classPrefix + '__group', [])}} class {{prefix}}-class"
   bind:touchstart="onTouchStart"
   catch:touchmove="onTouchMove"
   bind:touchend="onTouchEnd"
@@ -13,12 +14,13 @@
   >
     <view
       class="{{_.cls(classPrefix + '__item', [['active', curIndex == index]])}}"
+      style="height: {{pickItemHeight}}px"
       wx:for="{{options}}"
       wx:key="index"
       wx:for-item="option"
       data-index="{{ index }}"
     >
-      {{option.label}}
+      {{option[labelAlias]}}
     </view>
   </view>
 </view>

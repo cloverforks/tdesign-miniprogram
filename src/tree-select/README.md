@@ -24,6 +24,12 @@ isComponent: true
 
 ## 代码演示
 
+<a href="https://developers.weixin.qq.com/s/Bl64Ximr7LSl" title="在开发者工具中预览效果" target="_blank" rel="noopener noreferrer"> 在开发者工具中预览效果 </a>
+
+<blockquote style="background-color: #d9e1ff; font-size: 15px; line-height: 26px;margin: 16px 0 0;padding: 16px; border-radius: 6px; color: #0052d9" >
+<p>Tips: 请确保开发者工具为打开状态。导入开发者工具后，依次执行：npm i > 构建npm包 > 勾选 "将JS编译成ES5"</p>
+</blockquote>
+
 ### 组件类型
 
 #### 基础树形选择
@@ -45,7 +51,6 @@ isComponent: true
 
 名称 | 类型 | 默认值 | 说明 | 必传
 -- | -- | -- | -- | --
-custom-style | String | - | 自定义组件样式 | N
 height | String / Number | 336 | 高度，默认单位为 px | N
 keys | Object | - | 用来定义 value / label 在 `options` 中对应的字段别名。TS 类型：`KeysType` | N
 multiple | Boolean | false | 是否多选 | N
@@ -58,3 +63,15 @@ default-value | String / Number / Array | undefined | 选中值。非受控属�
 名称 | 参数 | 描述
 -- | -- | --
 change | `(value: TreeSelectValue, level: TreeLevel) ` | 点击任何节点均会触发；level 代表当前点击的层级，0 代表最左侧，依次递进。[详细类型定义](https://github.com/Tencent/tdesign-miniprogram/tree/develop/src/tree-select/type.ts)。<br/>`type TreeLevel: 0 \| 1 \| 2`<br/>
+
+
+### CSS 变量
+组件提供了下列 CSS 变量，可用于自定义样式。
+名称 | 默认值 | 描述 
+-- | -- | --
+--td-tree-bg-color | @bg-color-container | - 
+--td-tree-colum-width | 206rpx | - 
+--td-tree-item-active-color | @brand-color | - 
+--td-tree-item-font-size | 32rpx | - 
+--td-tree-item-height | 112rpx | - 
+--td-tree-root-bg-color | @bg-color-secondarycontainer | - 
